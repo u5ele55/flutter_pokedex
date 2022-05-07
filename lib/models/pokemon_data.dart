@@ -1,5 +1,37 @@
 import 'package:flutter/material.dart';
 
+List<List<dynamic>>? loadedPokemonData;
+
+class Pokemon {
+  final int number;
+  final String name;
+  final PokemonType? firstType;
+  final PokemonType? secondType;
+  final int hp;
+  final int attack;
+  final int defense;
+  final int speed;
+  final int generation;
+  final bool isLegendary;
+
+  Pokemon({
+    required this.number,
+    required this.name,
+    required this.firstType,
+    this.secondType,
+    required this.hp,
+    required this.attack,
+    required this.defense,
+    required this.speed,
+    required this.generation,
+    this.isLegendary = false,
+  });
+
+  String getImagePath() {
+    return "assets/normal/$number.png";
+  }
+}
+
 enum PokemonType {
   bug,
   dark,
@@ -151,34 +183,4 @@ Color getTypeColor(PokemonType? type, {double opacity = 1}) {
       (opacity * 255).toInt().toRadixString(16).padLeft(2, '0');
 
   return Color(int.parse("0x${_getOpacityHex(opacity)}" + hexString));
-}
-
-class Pokemon {
-  final int number;
-  final String name;
-  final PokemonType? firstType;
-  final PokemonType? secondType;
-  final int hp;
-  final int attack;
-  final int defense;
-  final int speed;
-  final int generation;
-  final bool isLegendary;
-
-  Pokemon({
-    required this.number,
-    required this.name,
-    required this.firstType,
-    this.secondType,
-    required this.hp,
-    required this.attack,
-    required this.defense,
-    required this.speed,
-    required this.generation,
-    this.isLegendary = false,
-  });
-
-  String getImagePath() {
-    return "assets/normal/$number.png";
-  }
 }
