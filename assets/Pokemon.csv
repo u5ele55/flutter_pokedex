@@ -71,7 +71,7 @@ number,name,type1,type2,total,hp,attack,defense,sp_attack,sp_defense,speed,gener
 51,Dugtrio,Ground,,405,35,80,50,50,70,120,1,FALSE
 51,Alolan Dugtrio,Ground,Steel,425,35,100,60,50,70,110,7,FALSE
 52,Meowth,Normal,,290,40,45,35,40,40,90,1,FALSE
-53,Gigantamax Meowth,Normal,,290,40,45,35,40,40,90,1,FALSE
+52,Gigantamax Meowth,Normal,,290,40,45,35,40,40,90,1,FALSE
 52,Alolan Meowth,Dark,,290,40,35,35,50,40,90,7,FALSE
 52,Galarian Meowth,Steel,,290,50,65,55,40,40,40,8,FALSE
 53,Persian,Normal,,440,65,70,60,65,65,115,1,FALSE

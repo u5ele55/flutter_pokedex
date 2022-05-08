@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/decorators/pokemon_tile_ornament.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/pages/pokemon_description_page.dart';
+import 'package:pokedex/widgets/stroke_text.dart';
 
 class PokemonListTile extends StatefulWidget {
   const PokemonListTile({Key? key, required this.pokemon}) : super(key: key);
@@ -13,8 +14,8 @@ class PokemonListTile extends StatefulWidget {
 }
 
 class _PokemonListTileState extends State<PokemonListTile> {
-  final double startOpacity = 0.6;
-  double _opacity = 0.6;
+  final double startOpacity = 0.7;
+  double _opacity = 0.7;
 
   @override
   Widget build(BuildContext context) {
@@ -58,28 +59,35 @@ class _PokemonListTileState extends State<PokemonListTile> {
                 alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(8),
-                  child: Text(
+                  child: StrokeText(
                     widget.pokemon.name,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      shadows: [Shadow(color: Colors.white, blurRadius: 4)],
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline1
+                        ?.merge(const TextStyle(
+                          shadows: [Shadow(color: Colors.white, blurRadius: 4)],
+                          fontSize: 20,
+                        )),
+                    strokeColor: Theme.of(context).highlightColor,
+                    strokeWidth: 4,
                   ),
                 ),
               ),
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
+                  padding: const EdgeInsets.all(12),
+                  child: StrokeText(
                     "#${widget.pokemon.number}",
                     style: const TextStyle(
                       fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      shadows: [Shadow(color: Colors.white, blurRadius: 4)],
+                      color: Colors.white,
+                      letterSpacing: 4,
+                      fontWeight: FontWeight.w100,
+                      shadows: [Shadow(color: Colors.white, blurRadius: 22)],
                       fontStyle: FontStyle.italic,
                     ),
+                    strokeWidth: 4,
                   ),
                 ),
               ),

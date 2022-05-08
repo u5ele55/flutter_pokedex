@@ -1,14 +1,9 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/constants.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/utils.dart';
 import 'package:pokedex/widgets/drawer.dart';
 import 'package:pokedex/widgets/page_loading_animation.dart';
-import 'package:pokedex/widgets/pokeball_loading_circle.dart';
 import 'package:pokedex/widgets/pokemon_list_tile.dart';
 
 class PokemonListPage extends StatefulWidget {
@@ -111,10 +106,9 @@ class _PokemonListPageState extends State<PokemonListPage> {
             controller: searchFieldController,
             // Refresh state so filter function applies to the new value
             onChanged: (_) => setState(() {}),
+            style: TextStyle(letterSpacing: 2),
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
-              //fillColor: Colors.white,
-              //filled: true,
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: const BorderSide(width: 0.8)),

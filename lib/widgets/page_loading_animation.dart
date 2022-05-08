@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:pokedex/animations/widget_slide_animation.dart';
 import 'package:pokedex/constants.dart';
@@ -31,6 +29,31 @@ class _PokeballPageLoadingAnimationState
     return Stack(
       children: [
         SlideAnimation(
+          endOffset: const Offset(0.0, 1.0),
+          delay: widget.duration * 2,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: screenHeight / 2,
+              width: screenWidth,
+              decoration: BoxDecoration(
+                border: const Border(top: BorderSide(color: Colors.grey)),
+                gradient: RadialGradient(
+                  colors: const [
+                    Color.fromRGBO(255, 255, 255, 1),
+                    Color.fromRGBO(128, 128, 128, 1),
+                  ],
+                  center: Alignment.topCenter,
+                  radius: gradientRadius,
+                ),
+              ),
+              child: Align(
+                  alignment: Alignment.topCenter,
+                  child: _pokeballBottomPart(pokeballDiameter)),
+            ),
+          ),
+        ),
+        SlideAnimation(
           endOffset: const Offset(0.0, -1.0),
           delay: widget.duration * 2,
           child: Align(
@@ -55,54 +78,62 @@ class _PokeballPageLoadingAnimationState
             ),
           ),
         ),
-        SlideAnimation(
-          endOffset: const Offset(0.0, 1.0),
-          delay: widget.duration * 2,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: screenHeight / 2,
-              width: screenWidth,
-              decoration: BoxDecoration(
-                border: const Border(top: BorderSide(color: Colors.grey)),
-                gradient: RadialGradient(
-                  colors: const [
-                    Color.fromRGBO(255, 255, 255, 1),
-                    Color.fromRGBO(128, 128, 128, 1),
-                  ],
-                  center: Alignment.topCenter,
-                  radius: gradientRadius,
-                ),
-              ),
-            ),
-          ),
-        )
       ],
     );
   }
 
   _pokeballTopPart(double pokeballDiameter) => Container(
-      decoration: BoxDecoration(
-        color: pokeballTopColor,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(pokeballDiameter),
-          topRight: Radius.circular(pokeballDiameter),
-        ),
-        border: Border.all(color: Colors.black, width: 4),
-      ),
-      height: pokeballDiameter / 2,
-      width: pokeballDiameter,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-            border: Border.all(color: Colors.black, width: 4),
+        decoration: BoxDecoration(
+          color: pokeballTopColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(pokeballDiameter),
+            topRight: Radius.circular(pokeballDiameter),
           ),
-          height: pokeballDiameter / 3,
-          child: PokeballLoadingCircle(),
-          width: pokeballDiameter / 3,
+          //border: Border.all(color: Colors.black, width: 4),
         ),
-      ));
+        height: pokeballDiameter / 2,
+        width: pokeballDiameter,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              //border: Border.all(color: Colors.black, width: 4),
+            ),
+            transform: Matrix4.translationValues(0, pokeballDiameter / 6, 0),
+            height: pokeballDiameter / 3,
+            child: const PokeballLoadingCircle(),
+            width: pokeballDiameter / 3,
+          ),
+        ),
+      );
+
+  _pokeballBottomPart(double pokeballDiameter) => Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(pokeballDiameter),
+            bottomRight: Radius.circular(pokeballDiameter),
+          ),
+          //border: Border.all(color: Colors.black, width: 4),
+        ),
+        height: pokeballDiameter / 2,
+        width: pokeballDiameter,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(pokeballDiameter),
+                bottomRight: Radius.circular(pokeballDiameter),
+              ),
+              //border: Border.all(color: Colors.black, width: 4),
+            ),
+            height: pokeballDiameter / 6,
+            width: pokeballDiameter / 3,
+          ),
+        ),
+      );
 }
