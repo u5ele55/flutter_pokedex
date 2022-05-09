@@ -5,12 +5,14 @@ class SlideAnimation extends StatefulWidget {
   final int duration;
   final int delay;
   final Widget child;
+  final bool destroyAfterCompletion;
   const SlideAnimation(
       {Key? key,
       required this.endOffset,
       required this.child,
       this.duration = 1000,
-      this.delay = 0})
+      this.delay = 0,
+      this.destroyAfterCompletion = false})
       : super(key: key);
 
   @override
@@ -22,7 +24,9 @@ class _SlideAnimationState extends State<SlideAnimation>
   late final AnimationController _controller = AnimationController(
     duration: Duration(milliseconds: widget.duration),
     vsync: this,
-  )..forward();
+  )..forward().whenComplete(() => setState(
+        () => _isShown = false || !widget.destroyAfterCompletion,
+      ));
 
   late final Future<Animation<Offset>> _offsetAnimation = Future.delayed(
     Duration(milliseconds: widget.delay),
@@ -34,6 +38,8 @@ class _SlideAnimationState extends State<SlideAnimation>
       curve: Curves.easeInExpo,
     )),
   );
+
+  bool _isShown = true;
 
   @override
   void dispose() {
@@ -47,10 +53,12 @@ class _SlideAnimationState extends State<SlideAnimation>
         future: _offsetAnimation,
         builder: (context, AsyncSnapshot<Animation<Offset>> snapshot) {
           if (snapshot.hasData) {
-            return SlideTransition(
-              position: snapshot.data!,
-              child: widget.child,
-            );
+            return (_isShown
+                ? SlideTransition(
+                    position: snapshot.data!,
+                    child: widget.child,
+                  )
+                : const SizedBox.shrink());
           } else {
             return widget.child;
           }

@@ -29,6 +29,7 @@ class _PokeballPageLoadingAnimationState
     return Stack(
       children: [
         SlideAnimation(
+          destroyAfterCompletion: true,
           endOffset: const Offset(0.0, 1.0),
           delay: widget.duration * 2,
           child: Align(
@@ -54,6 +55,7 @@ class _PokeballPageLoadingAnimationState
           ),
         ),
         SlideAnimation(
+          destroyAfterCompletion: true,
           endOffset: const Offset(0.0, -1.0),
           delay: widget.duration * 2,
           child: Align(
@@ -96,7 +98,7 @@ class _PokeballPageLoadingAnimationState
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white,
               //border: Border.all(color: Colors.black, width: 4),

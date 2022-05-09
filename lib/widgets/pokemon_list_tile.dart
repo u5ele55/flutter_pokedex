@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/constants.dart';
 import 'package:pokedex/decorators/pokemon_tile_ornament.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/pages/pokemon_description_page.dart';
@@ -48,11 +49,14 @@ class _PokemonListTileState extends State<PokemonListTile> {
                       fit: BoxFit.contain,
                     ),
                   ),
-                  foregroundPainter:
-                      CurvedPainter(getTypeColor(widget.pokemon.firstType)),
-                  painter: CurvedPainter(
-                      getTypeColor(widget.pokemon.secondType),
-                      isSecondType: true),
+                  foregroundPainter: getTypeColor(widget.pokemon.secondType) ==
+                          null
+                      ? null
+                      : CurvedPainter(getTypeColor(widget.pokemon.secondType)!,
+                          isSecondType: true),
+                  painter: getTypeColor(widget.pokemon.firstType) == null
+                      ? null
+                      : CurvedPainter(getTypeColor(widget.pokemon.firstType)!),
                 ),
               ),
               Align(
@@ -68,7 +72,7 @@ class _PokemonListTileState extends State<PokemonListTile> {
                           shadows: [Shadow(color: Colors.white, blurRadius: 4)],
                           fontSize: 20,
                         )),
-                    strokeColor: Theme.of(context).highlightColor,
+                    strokeColor: bluePokemonColor,
                     strokeWidth: 4,
                   ),
                 ),

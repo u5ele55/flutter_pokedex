@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/constants.dart';
 import 'package:pokedex/pages/pokemon_list_page.dart';
 
 void main() {
@@ -19,10 +20,9 @@ class MyApp extends StatelessWidget {
           headline1: TextStyle(
             fontWeight: FontWeight.w400,
             letterSpacing: 3,
-            color: Color.fromRGBO(255, 203, 5, 1),
+            color: yellowPokemonColor,
           ),
         ),
-        highlightColor: const Color.fromRGBO(42, 117, 187, 1),
       ),
       home: const PokemonListPage(),
     );

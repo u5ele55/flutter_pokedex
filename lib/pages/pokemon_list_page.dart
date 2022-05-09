@@ -16,12 +16,18 @@ class PokemonListPage extends StatefulWidget {
 
 class _PokemonListPageState extends State<PokemonListPage> {
   final searchFieldController = TextEditingController();
+  bool _isLoadingWidgetVisible = true;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance
         ?.addPostFrameCallback((_) => {PokemonListPage.firstLaunch = false});
+    Future.delayed(
+        Duration(milliseconds: loadingDuration),
+        () => setState(
+              () => _isLoadingWidgetVisible = false,
+            ));
   }
 
   @override
@@ -64,7 +70,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
           ),
           const PokeballPageLoadingAnimation(
             duration: loadingDuration,
-          ),
+          )
         ],
       ),
       endDrawer: const MyDrawer(),
@@ -106,7 +112,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
             controller: searchFieldController,
             // Refresh state so filter function applies to the new value
             onChanged: (_) => setState(() {}),
-            style: TextStyle(letterSpacing: 2),
+            style: const TextStyle(letterSpacing: 2),
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
               border: OutlineInputBorder(
