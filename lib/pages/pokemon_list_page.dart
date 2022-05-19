@@ -16,18 +16,12 @@ class PokemonListPage extends StatefulWidget {
 
 class _PokemonListPageState extends State<PokemonListPage> {
   final searchFieldController = TextEditingController();
-  bool _isLoadingWidgetVisible = true;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance
         ?.addPostFrameCallback((_) => {PokemonListPage.firstLaunch = false});
-    Future.delayed(
-        Duration(milliseconds: loadingDuration),
-        () => setState(
-              () => _isLoadingWidgetVisible = false,
-            ));
   }
 
   @override
@@ -60,9 +54,10 @@ class _PokemonListPageState extends State<PokemonListPage> {
                     crossAxisCount: 1,
                     children: const [CircularProgressIndicator()]);
               }
+
               return CustomScrollView(slivers: [
                 // SafeArea
-                _sizedBoxSliver(height: MediaQuery.of(context).padding.top),
+                _sizedBoxSliver(height: MediaQuery.of(context).padding.top + 8),
                 _searchEngine(),
                 child
               ]);
@@ -85,17 +80,19 @@ class _PokemonListPageState extends State<PokemonListPage> {
               pokemon: Pokemon(
                 number: pokemonData[0],
                 name: pokemonData[1],
+                hp: pokemonData[4],
                 speed: pokemonData[9],
                 attack: pokemonData[5],
                 defense: pokemonData[6],
                 generation: pokemonData[11],
                 firstType: typeFromString(pokemonData[2]),
                 secondType: typeFromString(pokemonData[3]),
-                hp: pokemonData[4],
                 isLegendary: pokemonData[12] == "FALSE" ? false : true,
               ),
             );
           },
+          // Is this really helped to boost performance??
+          addAutomaticKeepAlives: false,
           childCount: pokemonList.length,
         ),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
