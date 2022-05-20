@@ -1,20 +1,3 @@
-import 'package:csv/csv.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:pokedex/constants.dart';
-import 'package:pokedex/models/pokemon_data.dart';
-
-Future<List<List<dynamic>>> readCsvFile(filepath) async {
-  if (filepath == pathToPokemonCsv && loadedPokemonData != null) {
-    print("i'm aoptimized!");
-    return loadedPokemonData!;
-  }
-  final data = await rootBundle.loadString(filepath);
-  final fields = const CsvToListConverter().convert(data);
-  loadedPokemonData = fields;
-
-  return fields;
-}
-
 Future<List<List<dynamic>>> filterByUniqueId(
     Future<List<List<dynamic>>> fields) async {
   List<List<dynamic>> filtered = [];
@@ -58,5 +41,13 @@ Future<List<List<dynamic>>> filterPokemonList(
     }
   }
 
+  return res;
+}
+
+List<int> convertToIntListFromString(String raw) {
+  List<int> res = [];
+  for (String item in raw.substring(1, raw.length - 1).split(', ')) {
+    if (int.tryParse(item) != null) res.add(int.tryParse(item)!);
+  }
   return res;
 }

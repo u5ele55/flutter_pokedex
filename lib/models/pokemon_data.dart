@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-
-List<List<dynamic>>? loadedPokemonData;
+import 'package:pokedex/constants.dart';
+import 'package:pokedex/models/csv_handler.dart';
+import 'package:pokedex/models/graph.dart';
+import 'package:pokedex/utils.dart';
 
 class Pokemon {
-  final int number;
+  late final int number;
   final String name;
   final PokemonType? firstType;
   final PokemonType? secondType;
@@ -13,22 +15,57 @@ class Pokemon {
   final int speed;
   final int generation;
   final bool isLegendary;
+  final int? evolvesFrom;
+  final List<int>? evolvesTo;
 
-  Pokemon({
-    required this.number,
-    required this.name,
-    required this.firstType,
-    this.secondType,
-    required this.hp,
-    required this.attack,
-    required this.defense,
-    required this.speed,
-    required this.generation,
-    this.isLegendary = false,
-  });
+  Pokemon(
+      {required this.number,
+      required this.name,
+      required this.firstType,
+      this.secondType,
+      required this.hp,
+      required this.attack,
+      required this.defense,
+      required this.speed,
+      required this.generation,
+      this.isLegendary = false,
+      required this.evolvesFrom,
+      required String evolvesTo})
+      : evolvesTo = convertToIntListFromString(evolvesTo);
+
+  Pokemon.fromList(List<dynamic> data)
+      : this(
+          number: data[0],
+          name: data[1],
+          hp: data[4],
+          speed: data[9],
+          attack: data[5],
+          defense: data[6],
+          generation: data[11],
+          firstType: typeFromString(data[2]),
+          secondType: typeFromString(data[3]),
+          isLegendary: data[12] == "FALSE" ? false : true,
+          evolvesFrom: data[13] is num
+              ? data[13].toInt()
+              : int.tryParse(data[13].toString()),
+          evolvesTo: data[14],
+        );
 
   String getImagePath() {
     return "assets/normal/$number.png";
+  }
+
+  Graph getEvolutionChart() {
+    Graph result = Graph.empty();
+    int currentID = this.number;
+    int? parentID = this.evolvesFrom;
+    while (parentID != null) {
+      List? a = CSVHandler.getByFieldValue(0, parentID, pathToPokemonCsv);
+      currentID = a?[0];
+      parentID = a?[13];
+    }
+    // TODO: start from currentID and build Graph of evolution
+    return result;
   }
 }
 

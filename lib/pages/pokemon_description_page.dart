@@ -15,36 +15,41 @@ class PokemonDescriptionPage extends StatefulWidget {
 }
 
 class _PokemonDescriptionPageState extends State<PokemonDescriptionPage> {
-  double _panelOpenPercentage = 0;
+  double _panelOpenPercentage = 0.0;
+  final _headerSize = 64.0;
+  final _maxPanelHeightPercentage = .8;
+  final _minPanelHeightPercentage = .4;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SlidingUpPanel(
-        minHeight: MediaQuery.of(context).size.height / 2,
-        maxHeight: .75 * MediaQuery.of(context).size.height,
+        minHeight:
+            _minPanelHeightPercentage * MediaQuery.of(context).size.height,
+        maxHeight:
+            _maxPanelHeightPercentage * MediaQuery.of(context).size.height,
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
         panel: Column(
           children: [
             SizedBox(
-              height: 54,
+              height: _headerSize,
             ),
-            Text("aboba"),
-            Text("aboba"),
+            Text("${widget.pokemon.evolvesFrom}"),
+            Text("${widget.pokemon.evolvesTo}"),
             Text("aboba"),
           ],
         ),
         header: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: 54,
+          height: _headerSize,
           child: Center(
             child: StrokeText(
               widget.pokemon.name,
               style: Theme.of(context).textTheme.headline1?.merge(
                     const TextStyle(
                       shadows: [Shadow(color: Colors.white, blurRadius: 4)],
-                      fontSize: 20,
+                      fontSize: 32,
                     ),
                   ),
               strokeColor: bluePokemonColor,
@@ -58,7 +63,11 @@ class _PokemonDescriptionPageState extends State<PokemonDescriptionPage> {
             Container(
               height: 12 +
                   MediaQuery.of(context).size.height *
-                      (.5 - _panelOpenPercentage / 4),
+                      (1 -
+                          _minPanelHeightPercentage -
+                          _panelOpenPercentage *
+                              (_maxPanelHeightPercentage -
+                                  _minPanelHeightPercentage)),
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(

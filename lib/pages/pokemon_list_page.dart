@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pokedex/constants.dart';
+import 'package:pokedex/models/csv_handler.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/utils.dart';
 import 'package:pokedex/widgets/drawer.dart';
@@ -15,7 +17,10 @@ class PokemonListPage extends StatefulWidget {
 }
 
 class _PokemonListPageState extends State<PokemonListPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final searchFieldController = TextEditingController();
+  String _lastSearchQuery = "";
 
   @override
   void initState() {
@@ -33,12 +38,12 @@ class _PokemonListPageState extends State<PokemonListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: _floatingActionButton(),
+      key: _scaffoldKey,
       body: Stack(
         children: [
           FutureBuilder(
             future: filterPokemonList(
-                filterByUniqueId(readCsvFile(pathToPokemonCsv)),
+                filterByUniqueId(CSVHandler.readCsvFile(pathToPokemonCsv)),
                 searchFieldController.text),
             builder: (context, AsyncSnapshot<List<List<dynamic>>> snapshot) {
               Widget child;
@@ -55,14 +60,19 @@ class _PokemonListPageState extends State<PokemonListPage> {
                     children: const [CircularProgressIndicator()]);
               }
 
-              return CustomScrollView(slivers: [
-                // SafeArea
-                _sizedBoxSliver(height: MediaQuery.of(context).padding.top + 8),
-                _searchEngine(),
-                child
-              ]);
+              return GestureDetector(
+                onPanDown: (details) => FocusScope.of(context).unfocus(),
+                child: CustomScrollView(slivers: [
+                  // SafeArea
+                  _sizedBoxSliver(
+                      height: MediaQuery.of(context).padding.top + 8),
+                  _searchEngine(),
+                  child
+                ]),
+              );
             },
           ),
+          _floatingActionButton(),
           const PokeballPageLoadingAnimation(
             duration: loadingDuration,
           )
@@ -76,19 +86,9 @@ class _PokemonListPageState extends State<PokemonListPage> {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             var pokemonData = pokemonList[index];
+            print(pokemonData);
             return PokemonListTile(
-              pokemon: Pokemon(
-                number: pokemonData[0],
-                name: pokemonData[1],
-                hp: pokemonData[4],
-                speed: pokemonData[9],
-                attack: pokemonData[5],
-                defense: pokemonData[6],
-                generation: pokemonData[11],
-                firstType: typeFromString(pokemonData[2]),
-                secondType: typeFromString(pokemonData[3]),
-                isLegendary: pokemonData[12] == "FALSE" ? false : true,
-              ),
+              pokemon: Pokemon.fromList(pokemonData),
             );
           },
           // Is this really helped to boost performance??
@@ -108,7 +108,14 @@ class _PokemonListPageState extends State<PokemonListPage> {
           TextField(
             controller: searchFieldController,
             // Refresh state so filter function applies to the new value
-            onChanged: (_) => setState(() {}),
+            onChanged: (_) => {
+              if (searchFieldController.text != _lastSearchQuery)
+                setState(() {
+                  print("$_lastSearchQuery ${searchFieldController.text}");
+                  _lastSearchQuery = searchFieldController.text;
+                })
+            },
+            onSubmitted: (_) => {FocusScope.of(context).unfocus()},
             style: const TextStyle(letterSpacing: 2),
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -143,36 +150,15 @@ class _PokemonListPageState extends State<PokemonListPage> {
             SliverChildListDelegate([SizedBox(height: height, width: width)]),
       );
 
-  _floatingActionButton() => FutureBuilder(
-        future: Future.delayed(
-          const Duration(milliseconds: loadingDuration * 2 + 1000),
-          () {},
+  _floatingActionButton() => Positioned(
+        bottom: 16,
+        right: 12,
+        child: IconButton(
+          onPressed: () => {_scaffoldKey.currentState?.openEndDrawer()},
+          icon: const Icon(
+            Icons.menu,
+            size: 40,
+          ),
         ),
-        builder: (context, AsyncSnapshot<void> snapshot) {
-          Widget? child;
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            child = null;
-          } else {
-            child = Padding(
-              key: const ValueKey(1),
-              padding:
-                  EdgeInsets.only(top: 8 + MediaQuery.of(context).padding.top),
-              child: Builder(
-                builder: (context) => FloatingActionButton(
-                  onPressed: () => {Scaffold.of(context).openEndDrawer()},
-                  child: const Icon(
-                    Icons.menu,
-                    size: 30,
-                  ),
-                  backgroundColor: Colors.grey[200],
-                ),
-              ),
-            );
-          }
-          return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 1000),
-            child: child,
-          );
-        },
       );
 }
