@@ -6,7 +6,6 @@ class CSVHandler {
 
   static Future<List<List<dynamic>>> readCsvFile(filepath) async {
     if (storage[filepath] != null) {
-      print("i'm aoptimized!");
       return storage[filepath]!;
     }
 

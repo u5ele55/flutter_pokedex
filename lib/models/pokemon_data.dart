@@ -39,13 +39,13 @@ class Pokemon {
       : this(
           number: data[0],
           name: data[1],
-          hp: data[4],
-          speed: data[9],
-          attack: data[5],
-          defense: data[6],
-          generation: data[11],
           firstType: typeFromString(data[2]),
           secondType: typeFromString(data[3]),
+          hp: data[5],
+          attack: data[6],
+          defense: data[7],
+          speed: data[10],
+          generation: data[11],
           isLegendary: data[12] == "FALSE" ? false : true,
           evolvesFrom: customIntParse(data[13]),
           evolvesTo: data[14],
@@ -70,6 +70,7 @@ class Pokemon {
         CSVHandler.getByFieldValue(0, currentID, pathToPokemonCsv);
 
     Pokemon highestParent = Pokemon.fromList(highestParentRaw!);
+    evolutionGraph.rootID = highestParent.number;
     // Now, by having the root of the tree, we can build a graph by using DFS
     stack.Stack<Pokemon> pokemonStack = stack.Stack<Pokemon>();
     pokemonStack.push(highestParent);
@@ -79,8 +80,7 @@ class Pokemon {
       evolutionGraph.addNode(
           null, parent.number, Node(parent, null, parent.evolvesTo ?? []));
       for (int childID in parent.evolvesTo ?? []) {
-        List childList =
-            CSVHandler.getByFieldValue(0, childID, pathToPokemonCsv) ?? [];
+        List childList = getPokemonListById(childID);
         if (childList.isNotEmpty)
           pokemonStack.push(Pokemon.fromList(childList));
       }
@@ -93,6 +93,10 @@ class Pokemon {
   String toString() {
     return "<Pokemon | id: $number | name: $name>";
   }
+}
+
+List getPokemonListById(int id) {
+  return CSVHandler.getByFieldValue(0, id, pathToPokemonCsv) ?? [];
 }
 
 enum PokemonType {

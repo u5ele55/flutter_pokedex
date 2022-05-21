@@ -6,17 +6,23 @@ import 'package:pokedex/pages/pokemon_description_page.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
 
 class PokemonListTile extends StatefulWidget {
-  const PokemonListTile({Key? key, required this.pokemon}) : super(key: key);
+  const PokemonListTile(
+      {Key? key,
+      required this.pokemon,
+      this.displayName = true,
+      this.startOpacity = 0.7})
+      : super(key: key);
 
   final Pokemon pokemon;
+  final bool displayName;
+  final double startOpacity;
 
   @override
   State<PokemonListTile> createState() => _PokemonListTileState();
 }
 
 class _PokemonListTileState extends State<PokemonListTile> {
-  final double startOpacity = 0.7;
-  double _opacity = 0.7;
+  late double _opacity = widget.startOpacity;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +41,7 @@ class _PokemonListTileState extends State<PokemonListTile> {
         },
         child: Listener(
           onPointerDown: (_) => {setState(() => _opacity = 1)},
-          onPointerUp: (_) => {setState(() => _opacity = startOpacity)},
+          onPointerUp: (_) => {setState(() => _opacity = widget.startOpacity)},
           child: Stack(
             children: [
               AnimatedOpacity(
@@ -59,24 +65,27 @@ class _PokemonListTileState extends State<PokemonListTile> {
                       : CurvedPainter(getTypeColor(widget.pokemon.firstType)!),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: StrokeText(
-                    widget.pokemon.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline1
-                        ?.merge(const TextStyle(
-                          shadows: [Shadow(color: Colors.white, blurRadius: 4)],
-                          fontSize: 20,
-                        )),
-                    strokeColor: bluePokemonColor,
-                    strokeWidth: 4,
+              if (widget.displayName)
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: StrokeText(
+                      widget.pokemon.name,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline1
+                          ?.merge(const TextStyle(
+                            shadows: [
+                              Shadow(color: Colors.white, blurRadius: 4)
+                            ],
+                            fontSize: 20,
+                          )),
+                      strokeColor: bluePokemonColor,
+                      strokeWidth: 4,
+                    ),
                   ),
                 ),
-              ),
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(

@@ -8,6 +8,7 @@ class Node {
 
 class Graph {
   late Map<int, Node> vertices;
+  int? rootID;
   Graph.empty() {
     vertices = {};
   }
