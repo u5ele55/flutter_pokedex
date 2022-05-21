@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:pokedex/constants.dart';
 import 'package:pokedex/models/pokemon_data.dart';
@@ -7,7 +5,8 @@ import 'package:pokedex/widgets/stroke_text.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class PokemonDescriptionPage extends StatefulWidget {
-  PokemonDescriptionPage({Key? key, required this.pokemon}) : super(key: key);
+  const PokemonDescriptionPage({Key? key, required this.pokemon})
+      : super(key: key);
   final Pokemon pokemon;
 
   @override

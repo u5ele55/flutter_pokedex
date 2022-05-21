@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pokedex/constants.dart';
 import 'package:pokedex/models/csv_handler.dart';
 import 'package:pokedex/models/pokemon_data.dart';
@@ -86,7 +85,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             var pokemonData = pokemonList[index];
-            print(pokemonData);
+
             return PokemonListTile(
               pokemon: Pokemon.fromList(pokemonData),
             );

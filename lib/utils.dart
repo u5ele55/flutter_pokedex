@@ -51,3 +51,7 @@ List<int> convertToIntListFromString(String raw) {
   }
   return res;
 }
+
+int? customIntParse(dynamic n) {
+  return n is num ? n.toInt() : int.tryParse(n.toString());
+}

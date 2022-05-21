@@ -4,6 +4,8 @@ import 'package:pokedex/models/csv_handler.dart';
 import 'package:pokedex/models/graph.dart';
 import 'package:pokedex/utils.dart';
 
+import 'package:stack/stack.dart' as stack;
+
 class Pokemon {
   late final int number;
   final String name;
@@ -45,9 +47,7 @@ class Pokemon {
           firstType: typeFromString(data[2]),
           secondType: typeFromString(data[3]),
           isLegendary: data[12] == "FALSE" ? false : true,
-          evolvesFrom: data[13] is num
-              ? data[13].toInt()
-              : int.tryParse(data[13].toString()),
+          evolvesFrom: customIntParse(data[13]),
           evolvesTo: data[14],
         );
 
@@ -56,16 +56,42 @@ class Pokemon {
   }
 
   Graph getEvolutionChart() {
-    Graph result = Graph.empty();
-    int currentID = this.number;
-    int? parentID = this.evolvesFrom;
+    Graph evolutionGraph = Graph.empty();
+    int currentID = number;
+    int? parentID = evolvesFrom;
+
     while (parentID != null) {
       List? a = CSVHandler.getByFieldValue(0, parentID, pathToPokemonCsv);
       currentID = a?[0];
-      parentID = a?[13];
+      parentID = customIntParse(a?[13]);
     }
-    // TODO: start from currentID and build Graph of evolution
-    return result;
+
+    List? highestParentRaw =
+        CSVHandler.getByFieldValue(0, currentID, pathToPokemonCsv);
+
+    Pokemon highestParent = Pokemon.fromList(highestParentRaw!);
+    // Now, by having the root of the tree, we can build a graph by using DFS
+    stack.Stack<Pokemon> pokemonStack = stack.Stack<Pokemon>();
+    pokemonStack.push(highestParent);
+
+    while (pokemonStack.isNotEmpty) {
+      Pokemon parent = pokemonStack.pop();
+      evolutionGraph.addNode(
+          null, parent.number, Node(parent, null, parent.evolvesTo ?? []));
+      for (int childID in parent.evolvesTo ?? []) {
+        List childList =
+            CSVHandler.getByFieldValue(0, childID, pathToPokemonCsv) ?? [];
+        if (childList.isNotEmpty)
+          pokemonStack.push(Pokemon.fromList(childList));
+      }
+    }
+
+    return evolutionGraph;
+  }
+
+  @override
+  String toString() {
+    return "<Pokemon | id: $number | name: $name>";
   }
 }
 
