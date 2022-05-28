@@ -4,6 +4,7 @@ import 'package:pokedex/decorators/pokemon_tile_ornament.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/pages/pokemon_description_page.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PokemonListTile extends StatefulWidget {
   const PokemonListTile(
@@ -23,10 +24,12 @@ class PokemonListTile extends StatefulWidget {
 
 class _PokemonListTileState extends State<PokemonListTile> {
   late double _opacity = widget.startOpacity;
+  GlobalKey _cardKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      key: _cardKey,
       semanticContainer: true,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
@@ -49,10 +52,10 @@ class _PokemonListTileState extends State<PokemonListTile> {
                 opacity: _opacity,
                 duration: const Duration(milliseconds: 100),
                 child: CustomPaint(
-                  child: Center(
-                    child: Image.asset(
-                      widget.pokemon.getImagePath(),
-                      fit: BoxFit.contain,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Center(
+                      child: widget.pokemon.getImageWidget(),
                     ),
                   ),
                   foregroundPainter: getTypeColor(widget.pokemon.secondType) ==

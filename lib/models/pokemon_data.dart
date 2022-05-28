@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pokedex/constants.dart';
 import 'package:pokedex/models/csv_handler.dart';
 import 'package:pokedex/models/graph.dart';
@@ -52,7 +53,28 @@ class Pokemon {
         );
 
   String getImagePath() {
-    return "assets/normal/$number.png";
+    return "assets/" +
+        (number > maxSvgIndex ? "normal/$number.png" : "svg/$number.svg");
+  }
+
+  Widget getImageWidget({BoxFit? fit, double? height, double? width}) {
+    final assetName = getImagePath();
+
+    if (assetName.contains(".svg")) {
+      return SvgPicture.asset(
+        assetName,
+        fit: fit ?? BoxFit.contain,
+        height: height,
+        width: width,
+      );
+    } else {
+      return Image.asset(
+        assetName,
+        fit: fit ?? BoxFit.contain,
+        height: height,
+        width: width,
+      );
+    }
   }
 
   Graph getEvolutionChart() {
@@ -81,8 +103,9 @@ class Pokemon {
           null, parent.number, Node(parent, null, parent.evolvesTo ?? []));
       for (int childID in parent.evolvesTo ?? []) {
         List childList = getPokemonListById(childID);
-        if (childList.isNotEmpty)
+        if (childList.isNotEmpty) {
           pokemonStack.push(Pokemon.fromList(childList));
+        }
       }
     }
 

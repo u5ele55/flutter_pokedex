@@ -18,6 +18,7 @@ dependencies:
   csv: ^5.0.0
   stack: ^0.2.1 
   graphview: ^1.1.1
+  flutter_svg: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -35,7 +36,7 @@ flutter:
   assets:
     - assets/
     - assets/normal/
-    - assets/shiny/
+    - assets/svg/
   
   fonts:
     - family: Pokemon Solid

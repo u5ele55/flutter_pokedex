@@ -13,10 +13,6 @@ class CurvedPainter extends CustomPainter {
     var paint = Paint()..color = color;
     var path = Path();
 
-    final drawCubicLine =
-        (double xPrevious, double yPrevious, double xValue, double yValue) =>
-            path.quadraticBezierTo(xPrevious, yPrevious, xValue, yValue);
-
     List<Point<double>> points = [
       Point(0, size.height / 20),
       Point(9 * size.width / 10, 0),
@@ -40,7 +36,7 @@ class CurvedPainter extends CustomPainter {
       final p1 = isSecondType
           ? Point(size.width, size.height) - points[i + 1]
           : points[i + 1];
-      drawCubicLine(p0.x, p0.y, (p0.x + p1.x) / 2, (p0.y + p1.y) / 2);
+      path.quadraticBezierTo(p0.x, p0.y, (p0.x + p1.x) / 2, (p0.y + p1.y) / 2);
     }
 
     canvas.drawPath(path, paint);

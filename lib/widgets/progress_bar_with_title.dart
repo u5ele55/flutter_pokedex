@@ -25,11 +25,11 @@ class ProgressBarWithTitle extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16, letterSpacing: 1),
               ),
               Text(
                 value,
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16, letterSpacing: 1),
               ),
             ],
           ),
@@ -40,7 +40,7 @@ class ProgressBarWithTitle extends StatelessWidget {
         Container(
           width: double.infinity,
           child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: LinearProgressIndicator(
               color: color,
               value: progress,
