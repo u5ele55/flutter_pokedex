@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/constants.dart';
+import 'package:pokedex/constants.dart' as constants;
 import 'package:pokedex/decorators/pokemon_tile_ornament.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/pages/pokemon_description_page.dart';
@@ -84,7 +84,7 @@ class _PokemonListTileState extends State<PokemonListTile> {
                             ],
                             fontSize: 20,
                           )),
-                      strokeColor: bluePokemonColor,
+                      strokeColor: constants.bluePokemonColor,
                       strokeWidth: 4,
                     ),
                   ),

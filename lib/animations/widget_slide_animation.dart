@@ -2,16 +2,16 @@ import "package:flutter/material.dart";
 
 class SlideAnimation extends StatefulWidget {
   final Offset endOffset;
-  final int duration;
-  final int delay;
+  final Duration duration;
+  final Duration delay;
   final Widget child;
   final bool destroyAfterCompletion;
   const SlideAnimation(
       {Key? key,
       required this.endOffset,
       required this.child,
-      this.duration = 1000,
-      this.delay = 0,
+      required this.duration,
+      required this.delay,
       this.destroyAfterCompletion = false})
       : super(key: key);
 
@@ -21,25 +21,26 @@ class SlideAnimation extends StatefulWidget {
 
 class _SlideAnimationState extends State<SlideAnimation>
     with SingleTickerProviderStateMixin {
+  bool _isShown = true;
+
   late final AnimationController _controller = AnimationController(
-    duration: Duration(milliseconds: widget.duration),
+    duration: widget.duration + widget.delay,
     vsync: this,
   )..forward().whenComplete(() => setState(
         () => _isShown = false || !widget.destroyAfterCompletion,
       ));
 
-  late final Future<Animation<Offset>> _offsetAnimation = Future.delayed(
-    Duration(milliseconds: widget.delay),
-    () => Tween<Offset>(
-      begin: Offset.zero,
-      end: widget.endOffset,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInExpo,
-    )),
-  );
-
-  bool _isShown = true;
+  late final Animation<Offset> _offsetAnimation = Tween<Offset>(
+    begin: Offset.zero,
+    end: widget.endOffset,
+  ).animate(CurvedAnimation(
+    parent: _controller,
+    curve: Interval(
+      widget.delay.inMicroseconds /
+          (widget.delay + widget.duration).inMicroseconds,
+      1.0,
+    ),
+  ));
 
   @override
   void dispose() {
@@ -49,19 +50,11 @@ class _SlideAnimationState extends State<SlideAnimation>
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _offsetAnimation,
-        builder: (context, AsyncSnapshot<Animation<Offset>> snapshot) {
-          if (snapshot.hasData) {
-            return (_isShown
-                ? SlideTransition(
-                    position: snapshot.data!,
-                    child: widget.child,
-                  )
-                : const SizedBox.shrink());
-          } else {
-            return widget.child;
-          }
-        });
+    return _isShown
+        ? SlideTransition(
+            position: _offsetAnimation,
+            child: widget.child,
+          )
+        : const SizedBox.shrink();
   }
 }

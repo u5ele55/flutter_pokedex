@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/constants.dart';
+import 'package:pokedex/constants.dart' as constants;
 import 'package:pokedex/models/csv_handler.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/utils.dart';
@@ -42,7 +42,8 @@ class _PokemonListPageState extends State<PokemonListPage> {
         children: [
           FutureBuilder(
             future: filterPokemonList(
-                filterByUniqueId(CSVHandler.readCsvFile(pathToPokemonCsv)),
+                filterByUniqueId(
+                    CSVHandler.readCsvFile(constants.pathToPokemonCsv)),
                 searchFieldController.text),
             builder: (context, AsyncSnapshot<List<List<dynamic>>> snapshot) {
               Widget child;
@@ -73,7 +74,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
           ),
           _floatingActionButton(),
           const PokeballPageLoadingAnimation(
-            duration: loadingDuration,
+            duration: constants.loadingDuration,
           )
         ],
       ),
@@ -110,7 +111,6 @@ class _PokemonListPageState extends State<PokemonListPage> {
             onChanged: (_) => {
               if (searchFieldController.text != _lastSearchQuery)
                 setState(() {
-                  print("$_lastSearchQuery ${searchFieldController.text}");
                   _lastSearchQuery = searchFieldController.text;
                 })
             },

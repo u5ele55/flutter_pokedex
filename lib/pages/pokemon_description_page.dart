@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:pokedex/pages/content/pokemon_description_block.dart';
-
 import 'package:pokedex/models/pokemon_data.dart';
+
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class PokemonDescriptionPage extends StatefulWidget {

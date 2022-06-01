@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
-import 'package:pokedex/constants.dart';
+import 'package:pokedex/constants.dart' as constants;
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/widgets/pokemon_list_tile.dart';
 import 'package:pokedex/widgets/progress_bar_with_title.dart';
@@ -35,7 +35,7 @@ class PokemonDescriptionBlock extends StatelessWidget {
                       fontSize: 32,
                     ),
                   ),
-              strokeColor: bluePokemonColor,
+              strokeColor: constants.bluePokemonColor,
               strokeWidth: 4,
             ),
           ),
@@ -102,7 +102,7 @@ class PokemonDescriptionBlock extends StatelessWidget {
             ? null
             : BoxDecoration(boxShadow: [
                 BoxShadow(
-                  color: yellowPokemonColor.withAlpha(128),
+                  color: constants.yellowPokemonColor.withAlpha(128),
                   blurRadius: 8,
                 )
               ], borderRadius: const BorderRadius.all(Radius.circular(10))),
@@ -122,25 +122,25 @@ class PokemonDescriptionBlock extends StatelessWidget {
           ProgressBarWithTitle(
               title: "HP",
               value: pokemon.hp.toString(),
-              progress: pokemon.hp / pokemonMaxStats["hp"]!,
+              progress: pokemon.hp / constants.pokemonMaxStats["hp"]!,
               color: Colors.red),
           const SizedBox(height: 8),
           ProgressBarWithTitle(
               title: "Attack",
               value: pokemon.attack.toString(),
-              progress: pokemon.attack / pokemonMaxStats["attack"]!,
+              progress: pokemon.attack / constants.pokemonMaxStats["attack"]!,
               color: Colors.blue),
           const SizedBox(height: 8),
           ProgressBarWithTitle(
               title: "Defense",
               value: pokemon.defense.toString(),
-              progress: pokemon.defense / pokemonMaxStats["defense"]!,
+              progress: pokemon.defense / constants.pokemonMaxStats["defense"]!,
               color: Colors.green),
           const SizedBox(height: 8),
           ProgressBarWithTitle(
               title: "Speed",
               value: pokemon.speed.toString(),
-              progress: pokemon.speed / pokemonMaxStats["speed"]!,
+              progress: pokemon.speed / constants.pokemonMaxStats["speed"]!,
               color: Colors.black),
         ],
       ),
