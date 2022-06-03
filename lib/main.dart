@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/constants.dart';
+import 'package:pokedex/models/user_pokemons_sqlite.dart';
 import 'package:pokedex/pages/pokemon_list_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 

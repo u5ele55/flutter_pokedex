@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class StrokeText extends StatelessWidget {
   const StrokeText(this.text,
       {Key? key,
+      this.textAlign,
       TextStyle? style,
       this.strokeWidth = 2,
       this.strokeColor = Colors.black})
@@ -11,6 +12,7 @@ class StrokeText extends StatelessWidget {
 
   final String text;
   final TextStyle style;
+  final TextAlign? textAlign;
   final double strokeWidth;
   final Color strokeColor;
 
@@ -29,9 +31,10 @@ class StrokeText extends StatelessWidget {
                 ..color = strokeColor,
             ),
           ),
+          textAlign: textAlign,
         ),
         // Solid text as fill.
-        Text(text, style: style),
+        Text(text, style: style, textAlign: textAlign),
       ],
     );
   }

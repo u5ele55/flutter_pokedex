@@ -1,0 +1,83 @@
+import 'dart:async';
+
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
+class UserPokemon {
+  final int id;
+  int catched;
+  bool isFavorite;
+
+  UserPokemon(this.id, this.catched, this.isFavorite);
+  UserPokemon.fromSQL(this.id, this.catched, int isF) : isFavorite = isF == 0;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'catched': catched,
+      'is_favorite': isFavorite ? 1 : 0,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'UserPokemon{id: $id, catched: $catched, isFavorite: $isFavorite}';
+  }
+}
+
+class UserPokemonsSQLite {
+  get _database async => openDatabase(
+        join(await getDatabasesPath(), 'user_pokemons.db'),
+        onCreate: (db, version) {
+          return db.execute(
+            'CREATE TABLE user_pokemons(id INTEGER PRIMARY KEY, catched INTEGER, is_favorite INTEGER)',
+          );
+        },
+        version: 1,
+      );
+
+  Future<void> insert(UserPokemon pokemon) async {
+    print("insert");
+    final db = await _database;
+    await db.insert(
+      'user_pokemons',
+      pokemon.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  // A method that retrieves all the dogs from the dogs table.
+  Future<List<UserPokemon>> getDBasList() async {
+    final db = await _database;
+
+    final List<Map<String, dynamic>> maps = await db.query('user_pokemons');
+    return List.generate(maps.length, (i) {
+      return UserPokemon.fromSQL(
+        maps[i]['id'],
+        maps[i]['catched'],
+        maps[i]['is_favorite'],
+      );
+    });
+  }
+
+  Future<void> update(UserPokemon userPokemon) async {
+    final db = await _database;
+
+    await db.update(
+      'user_pokemons',
+      userPokemon.toMap(),
+      where: 'id = ?',
+      whereArgs: [userPokemon.id],
+    );
+  }
+
+  Future<void> delete(int id) async {
+    final db = await _database;
+
+    await db.delete(
+      'user_pokemons',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:pokedex/constants.dart' as constants;
 import 'package:pokedex/models/pokemon_data.dart';
+import 'package:pokedex/models/user_pokemons_sqlite.dart';
 import 'package:pokedex/widgets/pokemon_list_tile.dart';
 import 'package:pokedex/widgets/progress_bar_with_title.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
@@ -14,7 +15,6 @@ class PokemonDescriptionBlock extends StatelessWidget {
       : super(key: key);
 
   final Pokemon pokemon;
-  final _headerSize = 64.0;
   final ScrollController? scrollController;
 
   @override
@@ -23,10 +23,9 @@ class PokemonDescriptionBlock extends StatelessWidget {
       controller: scrollController,
       //shrinkWrap: true,
       children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: _headerSize,
-          child: Center(
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: StrokeText(
               pokemon.name,
               style: Theme.of(context).textTheme.headline1?.merge(
@@ -37,6 +36,7 @@ class PokemonDescriptionBlock extends StatelessWidget {
                   ),
               strokeColor: constants.bluePokemonColor,
               strokeWidth: 4,
+              textAlign: TextAlign.center,
             ),
           ),
         ),
@@ -155,5 +155,6 @@ class PokemonDescriptionBlock extends StatelessWidget {
           color: Colors.white,
           letterSpacing: 5,
         ),
+        textAlign: TextAlign.center,
       );
 }

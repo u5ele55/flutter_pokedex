@@ -55,20 +55,27 @@ class _PokemonListPageState extends State<PokemonListPage> {
                     crossAxisCount: 1,
                     children: [Text("Error: ${snapshot.error}")]);
               } else {
-                child = SliverGrid.count(
-                    crossAxisCount: 1,
-                    children: const [CircularProgressIndicator()]);
+                child = SliverGrid.count(crossAxisCount: 1, children: const [
+                  Padding(
+                    padding: EdgeInsets.all(32),
+                    child: CircularProgressIndicator(),
+                  )
+                ]);
               }
 
               return GestureDetector(
                 onPanDown: (details) => FocusScope.of(context).unfocus(),
-                child: CustomScrollView(slivers: [
-                  // SafeArea
-                  _sizedBoxSliver(
-                      height: MediaQuery.of(context).padding.top + 8),
-                  _searchEngine(),
-                  child
-                ]),
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: CustomScrollView(slivers: [
+                    // SafeArea
+                    _singleChildSliver(SizedBox(
+                        height: MediaQuery.of(context).padding.top + 8,
+                        width: double.infinity)),
+                    ..._searchEngine(),
+                    child
+                  ]),
+                ),
               );
             },
           ),
@@ -103,57 +110,102 @@ class _PokemonListPageState extends State<PokemonListPage> {
         ),
       );
 
-  _searchEngine() => SliverList(
-        delegate: SliverChildListDelegate([
-          TextField(
-            controller: searchFieldController,
-            // Refresh state so filter function applies to the new value
-            onChanged: (_) => {
-              if (searchFieldController.text != _lastSearchQuery)
-                setState(() {
-                  _lastSearchQuery = searchFieldController.text;
-                })
-            },
-            onSubmitted: (_) => {FocusScope.of(context).unfocus()},
-            style: const TextStyle(letterSpacing: 2),
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: const BorderSide(width: 0.8)),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                      width: 0.8, color: Theme.of(context).primaryColor)),
-              hintText: "Search",
-              prefixIcon: const Icon(
-                Icons.search,
-                size: 30,
-              ),
-              suffixIcon: IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: () => {
-                  if (searchFieldController.text.isNotEmpty)
-                    setState(() => {searchFieldController.text = ""})
+  _searchEngine() => [
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              TextField(
+                controller: searchFieldController,
+                // Refresh state so filter function applies to the new value
+                onChanged: (_) => {
+                  if (searchFieldController.text != _lastSearchQuery)
+                    setState(() {
+                      _lastSearchQuery = searchFieldController.text;
+                    })
                 },
-                splashRadius: 24,
+                onSubmitted: (_) => {FocusScope.of(context).unfocus()},
+                style: const TextStyle(letterSpacing: 2),
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: const BorderSide(width: 0.8)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide(
+                          width: 0.8, color: Theme.of(context).primaryColor)),
+                  hintText: "Search",
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    size: 30,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () => {
+                      if (searchFieldController.text.isNotEmpty)
+                        setState(() => {searchFieldController.text = ""})
+                    },
+                    splashRadius: 24,
+                  ),
+                ),
               ),
+            ],
+          ),
+        ),
+        _singleChildSliver(SizedBox(
+          height: 8,
+        )),
+        // TODO: google ExpandablePanel
+        SliverGrid(
+          delegate: SliverChildBuilderDelegate((context, index) {
+            return _typeButton(PokemonType.values[index]);
+          }, childCount: PokemonType.values.length),
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 100,
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+          ),
+        ),
+        _singleChildSliver(SizedBox(
+          height: 8,
+        )),
+        _singleChildSliver(Container(
+          color: Colors.redAccent,
+          height: 64,
+          child: Center(
+            child: Text(
+              "Favorites",
+              style: TextStyle(letterSpacing: 1, fontSize: 16),
             ),
           ),
-        ]),
-      );
+        )),
+      ];
 
-  _sizedBoxSliver({double height = 24, double width = double.infinity}) =>
-      SliverList(
-        delegate:
-            SliverChildListDelegate([SizedBox(height: height, width: width)]),
+  _typeButton(PokemonType type) {
+    return Container(
+      color: getTypeColor(type),
+      child: Center(
+        child: Text(
+          type.toString().split('.')[1],
+          style: TextStyle(letterSpacing: 1, fontSize: 16),
+        ),
+      ),
+    );
+  }
+
+  _singleChildSliver(Widget child) => SliverList(
+        delegate: SliverChildListDelegate([child]),
       );
 
   _floatingActionButton() => Positioned(
         bottom: 16,
         right: 12,
         child: IconButton(
-          onPressed: () => {_scaffoldKey.currentState?.openEndDrawer()},
+          onPressed: () => {
+            FocusScope.of(context).unfocus(),
+            _scaffoldKey.currentState?.openEndDrawer()
+          },
           icon: const Icon(
             Icons.menu,
             size: 40,
