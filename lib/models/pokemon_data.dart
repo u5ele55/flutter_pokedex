@@ -207,7 +207,7 @@ PokemonType? typeFromString(String type) {
   return ptype;
 }
 
-Color? getTypeColor(PokemonType? type, {double opacity = 1}) {
+Color? getTypeColor(PokemonType? type) {
   String? hexString;
   switch (type) {
     case PokemonType.bug:
@@ -269,10 +269,5 @@ Color? getTypeColor(PokemonType? type, {double opacity = 1}) {
       break;
   }
 
-  final _getOpacityHex = (double opac) =>
-      (opacity * 255).toInt().toRadixString(16).padLeft(2, '0');
-
-  return hexString == null
-      ? null
-      : Color(int.parse("0x${_getOpacityHex(opacity)}" + hexString));
+  return hexString == null ? null : Color(int.parse("0xFF" + hexString));
 }

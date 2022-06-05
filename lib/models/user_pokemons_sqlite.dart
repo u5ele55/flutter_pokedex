@@ -37,7 +37,6 @@ class UserPokemonsSQLite {
       );
 
   Future<void> insert(UserPokemon pokemon) async {
-    print("insert");
     final db = await _database;
     await db.insert(
       'user_pokemons',

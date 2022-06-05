@@ -4,7 +4,6 @@ import 'package:pokedex/decorators/pokemon_tile_ornament.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/pages/pokemon_description_page.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class PokemonListTile extends StatefulWidget {
   const PokemonListTile(
@@ -24,7 +23,7 @@ class PokemonListTile extends StatefulWidget {
 
 class _PokemonListTileState extends State<PokemonListTile> {
   late double _opacity = widget.startOpacity;
-  GlobalKey _cardKey = GlobalKey();
+  final GlobalKey _cardKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {

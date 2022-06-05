@@ -110,7 +110,6 @@ class _PokemonDescriptionPageState extends State<PokemonDescriptionPage> {
             future: UserPokemonsSQLite().getDBasList(),
             builder: (context, AsyncSnapshot<List<UserPokemon>> snapshot) {
               Widget child;
-              print("futureb called : ${userPokemon?.isFavorite}");
               if (snapshot.hasData) {
                 userPokemon =
                     _findPokemon(snapshot.data!, widget.pokemon.number);
@@ -130,7 +129,6 @@ class _PokemonDescriptionPageState extends State<PokemonDescriptionPage> {
             }),
         onPressed: () {
           if (userPokemon != null) {
-            print("not null");
             _toggleFavorite();
           }
         },

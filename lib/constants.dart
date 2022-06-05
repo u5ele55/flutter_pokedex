@@ -7,6 +7,7 @@ const Color bluePokemonColor = Color.fromRGBO(42, 117, 187, 1);
 const Duration loadingDuration = Duration(milliseconds: 1500);
 const Duration slideDuration = Duration(milliseconds: 1000);
 const Duration blinkDuration = Duration(milliseconds: 800);
+const Duration filterColorChangeDuration = Duration(milliseconds: 100);
 
 const String pathToPokemonCsv = 'assets/Pokemon_with_evolutions.csv';
 

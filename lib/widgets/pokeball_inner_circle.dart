@@ -25,8 +25,7 @@ class _PokeballInnerCircleState extends State<PokeballInnerCircle>
       widget.delay.inMicroseconds /
           (widget.delay + widget.duration).inMicroseconds,
       1.0,
-      curve: Curves
-          .easeInQuint, // TODO: find another curve, this one looks horrible
+      curve: Curves.easeInQuint,
     ),
   ));
 

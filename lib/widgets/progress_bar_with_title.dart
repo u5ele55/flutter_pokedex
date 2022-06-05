@@ -37,7 +37,7 @@ class ProgressBarWithTitle extends StatelessWidget {
         const SizedBox(
           height: 2,
         ),
-        Container(
+        SizedBox(
           width: double.infinity,
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
