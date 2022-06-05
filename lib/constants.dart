@@ -16,6 +16,8 @@ const Map<String, int> pokemonMaxStats = {
   "defense": 250,
   "speed": 200,
   "attack": 190,
+  "sp_defense": 250,
+  "sp_attack": 194,
 };
 
 const int maxSvgIndex = 649;

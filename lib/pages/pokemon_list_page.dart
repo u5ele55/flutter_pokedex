@@ -19,13 +19,21 @@ class PokemonListPage extends StatefulWidget {
 
 class _PokemonListPageState extends State<PokemonListPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scrollController = ScrollController();
 
   SearchConfig searchConfig = SearchConfig();
   String _lastSearchQuery = "";
   bool _filtersAND = true;
+  bool _showScrollToTopButton = false;
 
   @override
   void initState() {
+    _scrollController.addListener(() => setState(() {
+          if (_scrollController.offset > 1200)
+            _showScrollToTopButton = true;
+          else
+            _showScrollToTopButton = false;
+        }));
     super.initState();
     WidgetsBinding.instance
         ?.addPostFrameCallback((_) => {PokemonListPage.firstLaunch = false});
@@ -66,26 +74,28 @@ class _PokemonListPageState extends State<PokemonListPage> {
                 ]);
               }
 
-              return GestureDetector(
-                onPanDown: (details) => FocusScope.of(context).unfocus(),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: CustomScrollView(slivers: [
-                    // SafeArea
-                    _singleChildSliver(SizedBox(
-                        height: MediaQuery.of(context).padding.top + 8,
-                        width: double.infinity)),
-                    ..._searchEngine(),
-                    child
-                  ]),
-                ),
+              return Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      // SafeArea
+                      _singleChildSliver(SizedBox(
+                          height: MediaQuery.of(context).padding.top + 8,
+                          width: double.infinity)),
+                      ..._searchEngine(),
+                      child
+                    ],
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag),
               );
             },
           ),
           _floatingActionButton(),
+          _scrollToTopButton(),
           const PokeballPageLoadingAnimation(
             duration: constants.loadingDuration,
-          )
+          ),
         ],
       ),
       endDrawer: const MyDrawer(),
@@ -148,8 +158,8 @@ class _PokemonListPageState extends State<PokemonListPage> {
                     icon: const Icon(Icons.clear),
                     onPressed: () => {
                       if (searchConfig.searchFieldController.text.isNotEmpty)
-                        setState(() =>
-                            {searchConfig.searchFieldController.text = ""})
+                        setState(
+                            () => searchConfig.searchFieldController.text = "")
                     },
                     splashRadius: 24,
                   ),
@@ -176,7 +186,6 @@ class _PokemonListPageState extends State<PokemonListPage> {
             child: Text(
               "Filters : ${searchConfig.types.values.where((element) => element).length + (searchConfig.isFavorites ? 1 : 0)}",
               style: const TextStyle(fontSize: 18, letterSpacing: 1.5),
-              //textAlign: TextAlign.center,
             ),
           ),
           collapsed: const SizedBox.shrink(),
@@ -279,13 +288,32 @@ class _PokemonListPageState extends State<PokemonListPage> {
         delegate: SliverChildListDelegate([child]),
       );
 
+  _scrollToTopButton() => _showScrollToTopButton
+      ? Positioned(
+          bottom: 16,
+          left: 12,
+          child: FloatingActionButton(
+            backgroundColor: Colors.white,
+            onPressed: () => {
+              _scrollController.animateTo(0,
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.fastLinearToSlowEaseIn)
+            },
+            child: const Icon(
+              Icons.arrow_upward,
+              size: 40,
+            ),
+          ),
+        )
+      : const SizedBox.shrink();
+
   _floatingActionButton() => Positioned(
         bottom: 16,
         right: 12,
         child: IconButton(
           onPressed: () => {
             FocusScope.of(context).unfocus(),
-            _scaffoldKey.currentState?.openEndDrawer()
+            _scaffoldKey.currentState?.openEndDrawer(),
           },
           icon: const Icon(
             Icons.menu,

@@ -33,6 +33,7 @@ class _PokemonListTileState extends State<PokemonListTile> {
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
         onTap: () => {
+          FocusScope.of(context).unfocus(),
           Navigator.push(
             context,
             MaterialPageRoute(

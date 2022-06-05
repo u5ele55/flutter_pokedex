@@ -3,6 +3,8 @@ import 'package:pokedex/models/user_pokemons_sqlite.dart';
 
 import 'package:pokedex/pages/content/pokemon_description_block.dart';
 import 'package:pokedex/models/pokemon_data.dart';
+import 'package:pokedex/utils.dart';
+import 'package:pokedex/widgets/stroke_text.dart';
 
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -77,7 +79,45 @@ class _PokemonDescriptionPageState extends State<PokemonDescriptionPage> {
                   child: Flex(direction: Axis.vertical, children: [
                     Expanded(child: Container(), flex: 1),
                     Expanded(child: widget.pokemon.getImageWidget(), flex: 2),
-                    Expanded(child: Container(), flex: 1),
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 128,
+                            padding: const EdgeInsets.only(left: 12),
+                            child: StrokeText(
+                              toRomanNumber(widget.pokemon.generation),
+                              strokeWidth: 6,
+                              strokeColor: Colors.grey[600]!,
+                              style: const TextStyle(
+                                fontSize: 48,
+                                letterSpacing: 6,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(right: 12),
+                            height: 128,
+                            child: StrokeText(
+                              "#${widget.pokemon.number}",
+                              strokeColor: Colors.white,
+                              strokeWidth: 6,
+                              style: TextStyle(
+                                color:
+                                    (getTypeColor(widget.pokemon.firstType) ??
+                                            Colors.grey)
+                                        .withAlpha(128),
+                                fontSize: 48,
+                                letterSpacing: 6,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ]),
                 ),
               ],

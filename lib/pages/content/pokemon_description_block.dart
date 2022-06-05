@@ -44,6 +44,7 @@ class PokemonDescriptionBlock extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: Column(
             children: [
+              const SizedBox(height: 4),
               _headline("Stats"),
               _statsBlock(),
               const SizedBox(height: 16),
@@ -95,23 +96,44 @@ class PokemonDescriptionBlock extends StatelessWidget {
     );
   }
 
-  evolutionNodeWidget(id) => Container(
-        height: 128,
-        width: 192,
-        decoration: id != pokemon.number
-            ? null
-            : BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: constants.yellowPokemonColor.withAlpha(128),
-                  blurRadius: 8,
-                )
-              ], borderRadius: const BorderRadius.all(Radius.circular(10))),
-        child: PokemonListTile(
-          pokemon: Pokemon.fromList(getPokemonListById(id)),
-          displayName: false,
-          startOpacity: id != pokemon.number ? 0.7 : 1,
+  evolutionNodeWidget(id) {
+    Pokemon nextPokemon = Pokemon.fromList(getPokemonListById(id));
+    double blockWidth = 192;
+    return Column(
+      children: [
+        Container(
+          height: blockWidth * 2 / 3,
+          width: blockWidth,
+          decoration: id != pokemon.number
+              ? null
+              : BoxDecoration(boxShadow: [
+                  BoxShadow(
+                    color: constants.yellowPokemonColor.withAlpha(128),
+                    blurRadius: 8,
+                  )
+                ], borderRadius: const BorderRadius.all(Radius.circular(10))),
+          child: PokemonListTile(
+            pokemon: nextPokemon,
+            displayName: false,
+            startOpacity: id != pokemon.number ? 0.7 : 1,
+          ),
         ),
-      );
+        SizedBox(
+          width: blockWidth,
+          child: Center(
+            child: StrokeText(nextPokemon.name,
+                strokeWidth: 3,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 18,
+                  letterSpacing: 3,
+                  color: Colors.white,
+                )),
+          ),
+        )
+      ],
+    );
+  }
 
   _statsBlock() {
     return Padding(
@@ -142,6 +164,20 @@ class PokemonDescriptionBlock extends StatelessWidget {
               value: pokemon.speed.toString(),
               progress: pokemon.speed / constants.pokemonMaxStats["speed"]!,
               color: Colors.black),
+          const SizedBox(height: 8),
+          ProgressBarWithTitle(
+              title: "Sp. Attack",
+              value: pokemon.specialAttack.toString(),
+              progress: pokemon.specialAttack /
+                  constants.pokemonMaxStats["sp_attack"]!,
+              color: Colors.deepOrange),
+          const SizedBox(height: 8),
+          ProgressBarWithTitle(
+              title: "Sp. Defense",
+              value: pokemon.specialDefense.toString(),
+              progress: pokemon.specialDefense /
+                  constants.pokemonMaxStats["sp_defense"]!,
+              color: Colors.deepPurple),
         ],
       ),
     );

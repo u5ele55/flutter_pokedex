@@ -15,6 +15,8 @@ class Pokemon {
   final int hp;
   final int attack;
   final int defense;
+  final int specialAttack;
+  final int specialDefense;
   final int speed;
   final int generation;
   final bool isLegendary;
@@ -29,6 +31,8 @@ class Pokemon {
       required this.hp,
       required this.attack,
       required this.defense,
+      required this.specialAttack,
+      required this.specialDefense,
       required this.speed,
       required this.generation,
       this.isLegendary = false,
@@ -45,6 +49,8 @@ class Pokemon {
           hp: data[5],
           attack: data[6],
           defense: data[7],
+          specialAttack: data[8],
+          specialDefense: data[9],
           speed: data[10],
           generation: data[11],
           isLegendary: data[12] == "FALSE" ? false : true,
