@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/constants.dart' as constants;
 import 'package:pokedex/decorators/pokemon_tile_ornament.dart';
 import 'package:pokedex/models/pokemon_data.dart';
+import 'package:pokedex/models/user_pokemons_sqlite.dart';
 import 'package:pokedex/pages/pokemon_description_page.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
 
@@ -10,11 +11,13 @@ class PokemonListTile extends StatefulWidget {
       {Key? key,
       required this.pokemon,
       this.displayName = true,
+      this.preferPNG = false,
       this.startOpacity = 0.7})
       : super(key: key);
 
   final Pokemon pokemon;
   final bool displayName;
+  final bool preferPNG;
   final double startOpacity;
 
   @override
@@ -24,6 +27,14 @@ class PokemonListTile extends StatefulWidget {
 class _PokemonListTileState extends State<PokemonListTile> {
   late double _opacity = widget.startOpacity;
   final GlobalKey _cardKey = GlobalKey();
+  late final Future<UserPokemon?> _userPokemon =
+      UserPokemonsSQLite().getById(widget.pokemon.number);
+
+  @override
+  void initState() {
+    debugPrint("Init ${widget.pokemon.number}");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +42,10 @@ class _PokemonListTileState extends State<PokemonListTile> {
       key: _cardKey,
       semanticContainer: true,
       clipBehavior: Clip.antiAliasWithSaveLayer,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      elevation: 5,
       child: InkWell(
         onTap: () => {
           FocusScope.of(context).unfocus(),
@@ -53,9 +68,12 @@ class _PokemonListTileState extends State<PokemonListTile> {
                 duration: const Duration(milliseconds: 100),
                 child: CustomPaint(
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: widget.preferPNG
+                        ? const EdgeInsets.all(0)
+                        : const EdgeInsets.all(12),
                     child: Center(
-                      child: widget.pokemon.getImageWidget(),
+                      child: widget.pokemon
+                          .getImageWidget(preferPNG: widget.preferPNG),
                     ),
                   ),
                   foregroundPainter: getTypeColor(widget.pokemon.secondType) ==
@@ -93,17 +111,43 @@ class _PokemonListTileState extends State<PokemonListTile> {
                 alignment: Alignment.topRight,
                 child: Padding(
                   padding: const EdgeInsets.all(12),
-                  child: StrokeText(
-                    "#${widget.pokemon.number}",
-                    style: const TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                      letterSpacing: 4,
-                      fontWeight: FontWeight.w100,
-                      shadows: [Shadow(color: Colors.white, blurRadius: 22)],
-                      fontStyle: FontStyle.italic,
-                    ),
-                    strokeWidth: 4,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      FutureBuilder(
+                        future: _userPokemon,
+                        builder:
+                            (context, AsyncSnapshot<UserPokemon?> snapshot) {
+                          if (snapshot.hasData &&
+                              (snapshot.data?.isFavorite ?? false)) {
+                            return const Padding(
+                              padding: EdgeInsets.all(0.0),
+                              child: Icon(
+                                Icons.favorite_border,
+                                size: 34,
+                              ),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        },
+                      ),
+                      StrokeText(
+                        "#${widget.pokemon.number}",
+                        style: const TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          letterSpacing: 4,
+                          fontWeight: FontWeight.w100,
+                          shadows: [
+                            Shadow(color: Colors.white, blurRadius: 22)
+                          ],
+                          fontStyle: FontStyle.italic,
+                        ),
+                        strokeWidth: 4,
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -111,10 +155,6 @@ class _PokemonListTileState extends State<PokemonListTile> {
           ),
         ),
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      elevation: 5,
     );
   }
 }

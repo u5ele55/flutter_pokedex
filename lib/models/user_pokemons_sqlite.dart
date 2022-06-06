@@ -45,7 +45,6 @@ class UserPokemonsSQLite {
     );
   }
 
-  // A method that retrieves all the dogs from the dogs table.
   Future<List<UserPokemon>> getDBasList() async {
     final db = await _database;
 
@@ -57,6 +56,17 @@ class UserPokemonsSQLite {
         maps[i]['is_favorite'],
       );
     });
+  }
+
+  Future<UserPokemon?> getById(int id) async {
+    final db = await _database;
+
+    final List<Map<String, dynamic>> raw =
+        await db.query('user_pokemons', where: "id = ?", whereArgs: [id]);
+
+    if (raw.length == 0) return null;
+    return UserPokemon.fromSQL(
+        raw[0]["id"], raw[0]["catched"], raw[0]["is_favorite"]);
   }
 
   Future<void> update(UserPokemon userPokemon) async {

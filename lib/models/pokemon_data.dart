@@ -58,13 +58,17 @@ class Pokemon {
           evolvesTo: data[14],
         );
 
-  String getImagePath() {
+  String getImagePath({bool preferPNG = false}) {
+    //final maxSvgIndex = -1;
     return "assets/" +
-        (number > maxSvgIndex ? "normal/$number.png" : "svg/$number.svg");
+        (number > maxSvgIndex || preferPNG
+            ? "normal/$number.png"
+            : "svg/$number.svg");
   }
 
-  Widget getImageWidget({BoxFit? fit, double? height, double? width}) {
-    final assetName = getImagePath();
+  Widget getImageWidget(
+      {BoxFit? fit, double? height, double? width, bool preferPNG = false}) {
+    final assetName = getImagePath(preferPNG: preferPNG);
 
     if (assetName.contains(".svg")) {
       return SvgPicture.asset(
@@ -72,6 +76,7 @@ class Pokemon {
         fit: fit ?? BoxFit.contain,
         height: height,
         width: width,
+        placeholderBuilder: (context) => const Center(child: Text("Building")),
       );
     } else {
       return Image.asset(

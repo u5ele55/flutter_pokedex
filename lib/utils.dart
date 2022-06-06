@@ -5,6 +5,7 @@ import 'package:pokedex/models/user_pokemons_sqlite.dart';
 Future<List<List<dynamic>>> filterByUniqueId(
     Future<List<List<dynamic>>> fields) async {
   List<List<dynamic>> filtered = [];
+  print("filter");
 
   List<List<dynamic>> readyFields = await fields;
   List<bool> was = List.filled(readyFields.length, false);

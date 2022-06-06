@@ -21,6 +21,9 @@ class _PokemonListPageState extends State<PokemonListPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scrollController = ScrollController();
 
+  late Future<List<List<dynamic>>> _pokemonsCSV =
+      filterByUniqueId(CSVHandler.readCsvFile(constants.pathToPokemonCsv));
+
   SearchConfig searchConfig = SearchConfig();
   String _lastSearchQuery = "";
   bool _filtersAND = true;
@@ -28,12 +31,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
 
   @override
   void initState() {
-    _scrollController.addListener(() => setState(() {
-          if (_scrollController.offset > 1200)
-            _showScrollToTopButton = true;
-          else
-            _showScrollToTopButton = false;
-        }));
+    //_scrollController.addListener(() => setState(() {_showScrollToTopButton = _scrollController.offset > 1200;}));
     super.initState();
     WidgetsBinding.instance
         ?.addPostFrameCallback((_) => {PokemonListPage.firstLaunch = false});
@@ -45,6 +43,13 @@ class _PokemonListPageState extends State<PokemonListPage> {
     super.dispose();
   }
 
+  void updateList() => setState(() {
+        _pokemonsCSV = filterPokemonList(
+            filterByUniqueId(
+                CSVHandler.readCsvFile(constants.pathToPokemonCsv)),
+            searchConfig);
+      });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,10 +57,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
       body: Stack(
         children: [
           FutureBuilder(
-            future: filterPokemonList(
-                filterByUniqueId(
-                    CSVHandler.readCsvFile(constants.pathToPokemonCsv)),
-                searchConfig),
+            future: _pokemonsCSV,
             builder: (context, AsyncSnapshot<List<List<dynamic>>> snapshot) {
               Widget child;
               if (snapshot.hasData) {
@@ -77,7 +79,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: CustomScrollView(
-                    controller: _scrollController,
+                    //controller: _scrollController,
                     slivers: [
                       // SafeArea
                       _singleChildSliver(SizedBox(
@@ -109,10 +111,13 @@ class _PokemonListPageState extends State<PokemonListPage> {
 
             return PokemonListTile(
               pokemon: Pokemon.fromList(pokemonData),
+              preferPNG: true,
             );
           },
           // Is this really helped to boost performance??
           addAutomaticKeepAlives: false,
+          addSemanticIndexes: false,
+          //addRepaintBoundaries: false,
           childCount: pokemonList.length,
         ),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -133,10 +138,11 @@ class _PokemonListPageState extends State<PokemonListPage> {
                 onChanged: (_) => {
                   if (searchConfig.searchFieldController.text !=
                       _lastSearchQuery)
-                    setState(() {
+                    {
                       _lastSearchQuery =
-                          searchConfig.searchFieldController.text;
-                    })
+                          searchConfig.searchFieldController.text,
+                      updateList()
+                    }
                 },
                 onSubmitted: (_) => {FocusScope.of(context).unfocus()},
                 style: const TextStyle(letterSpacing: 2),
@@ -158,8 +164,10 @@ class _PokemonListPageState extends State<PokemonListPage> {
                     icon: const Icon(Icons.clear),
                     onPressed: () => {
                       if (searchConfig.searchFieldController.text.isNotEmpty)
-                        setState(
-                            () => searchConfig.searchFieldController.text = "")
+                        {
+                          searchConfig.searchFieldController.text = "",
+                          updateList()
+                        }
                     },
                     splashRadius: 24,
                   ),
@@ -202,7 +210,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
                       searchConfig.types[key] = !_filtersAND;
                     });
                     _filtersAND = !_filtersAND;
-                    setState(() {});
+                    updateList();
                   },
                   child: Text(
                     "Choose All",
@@ -233,8 +241,8 @@ class _PokemonListPageState extends State<PokemonListPage> {
                     }),
                   ),
                   onPressed: () {
-                    setState(() =>
-                        searchConfig.isFavorites = !searchConfig.isFavorites);
+                    searchConfig.isFavorites = !searchConfig.isFavorites;
+                    updateList();
                   },
                   child: Center(
                     child: Text(
@@ -264,8 +272,9 @@ class _PokemonListPageState extends State<PokemonListPage> {
         }),
       ),
       onPressed: () {
-        setState(() => searchConfig.types[type] = !searchConfig.types[type]!);
+        searchConfig.types[type] = !searchConfig.types[type]!;
         _filtersAND = _getFiltersAND();
+        updateList();
       },
       child: FittedBox(
         fit: BoxFit.scaleDown,
