@@ -31,10 +31,10 @@ class _PokemonListPageState extends State<PokemonListPage> {
 
   @override
   void initState() {
-    _scrollController.addListener(() => setState(() {
-          _showScrollToTopButton = _scrollController.offset > 1200;
-          debugPrint("a");
-        }));
+    //_scrollController.addListener(() => setState(() {
+    //      _showScrollToTopButton = _scrollController.offset > 1200;
+    //      debugPrint("a");
+    //    }));
     super.initState();
     WidgetsBinding.instance
         ?.addPostFrameCallback((_) => {PokemonListPage.firstLaunch = false});
