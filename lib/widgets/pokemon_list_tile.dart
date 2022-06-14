@@ -57,103 +57,98 @@ class _PokemonListTileState extends State<PokemonListTile> {
             ),
           )
         },
-        child: Listener(
-          onPointerDown: (_) => {setState(() => _opacity = 1)},
-          onPointerUp: (_) => {setState(() => _opacity = widget.startOpacity)},
-          child: Stack(
-            children: [
-              AnimatedOpacity(
+        //child: Listener(
+        //onPointerDown: (_) => {setState(() => _opacity = 1)},
+        //onPointerUp: (_) => {setState(() => _opacity = widget.startOpacity)},
+        child: Stack(
+          children: [
+            /*AnimatedOpacity(
                 curve: Curves.easeIn,
                 opacity: _opacity,
                 duration: const Duration(milliseconds: 100),
-                child: CustomPaint(
-                  child: Padding(
-                    padding: widget.preferPNG
-                        ? const EdgeInsets.all(0)
-                        : const EdgeInsets.all(12),
-                    child: Center(
-                      child: widget.pokemon
-                          .getImageWidget(preferPNG: widget.preferPNG),
-                    ),
-                  ),
-                  foregroundPainter: getTypeColor(widget.pokemon.secondType) ==
-                          null
-                      ? null
-                      : CurvedPainter(getTypeColor(widget.pokemon.secondType)!,
-                          isSecondType: true),
-                  painter: getTypeColor(widget.pokemon.firstType) == null
-                      ? null
-                      : CurvedPainter(getTypeColor(widget.pokemon.firstType)!),
+                child: */
+            CustomPaint(
+              child: Padding(
+                padding: widget.preferPNG
+                    ? const EdgeInsets.all(0)
+                    : const EdgeInsets.all(12),
+                child: Center(
+                  child: widget.pokemon
+                      .getImageWidget(preferPNG: widget.preferPNG),
                 ),
               ),
-              if (widget.displayName)
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: StrokeText(
-                      widget.pokemon.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline1
-                          ?.merge(const TextStyle(
-                            shadows: [
-                              Shadow(color: Colors.white, blurRadius: 4)
-                            ],
-                            fontSize: 20,
-                          )),
-                      strokeColor: constants.bluePokemonColor,
+              foregroundPainter: getTypeColor(widget.pokemon.secondType) == null
+                  ? null
+                  : CurvedPainter(getTypeColor(widget.pokemon.secondType)!,
+                      isSecondType: true),
+              painter: getTypeColor(widget.pokemon.firstType) == null
+                  ? null
+                  : CurvedPainter(getTypeColor(widget.pokemon.firstType)!),
+            ),
+            //),
+            if (widget.displayName)
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: StrokeText(
+                    widget.pokemon.name,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline1
+                        ?.merge(const TextStyle(
+                          shadows: [Shadow(color: Colors.white, blurRadius: 4)],
+                          fontSize: 20,
+                        )),
+                    strokeColor: constants.bluePokemonColor,
+                    strokeWidth: 4,
+                  ),
+                ),
+              ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    FutureBuilder(
+                      future: _userPokemon,
+                      builder: (context, AsyncSnapshot<UserPokemon?> snapshot) {
+                        if (snapshot.hasData &&
+                            (snapshot.data?.isFavorite ?? false)) {
+                          return const Padding(
+                            padding: EdgeInsets.all(0.0),
+                            child: Icon(
+                              Icons.favorite_border,
+                              size: 34,
+                            ),
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                    ),
+                    StrokeText(
+                      "#${widget.pokemon.number}",
+                      style: const TextStyle(
+                        fontSize: 24,
+                        color: Colors.white,
+                        letterSpacing: 4,
+                        fontWeight: FontWeight.w100,
+                        shadows: [Shadow(color: Colors.white, blurRadius: 22)],
+                        fontStyle: FontStyle.italic,
+                      ),
                       strokeWidth: 4,
                     ),
-                  ),
-                ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      FutureBuilder(
-                        future: _userPokemon,
-                        builder:
-                            (context, AsyncSnapshot<UserPokemon?> snapshot) {
-                          if (snapshot.hasData &&
-                              (snapshot.data?.isFavorite ?? false)) {
-                            return const Padding(
-                              padding: EdgeInsets.all(0.0),
-                              child: Icon(
-                                Icons.favorite_border,
-                                size: 34,
-                              ),
-                            );
-                          } else {
-                            return const SizedBox.shrink();
-                          }
-                        },
-                      ),
-                      StrokeText(
-                        "#${widget.pokemon.number}",
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                          letterSpacing: 4,
-                          fontWeight: FontWeight.w100,
-                          shadows: [
-                            Shadow(color: Colors.white, blurRadius: 22)
-                          ],
-                          fontStyle: FontStyle.italic,
-                        ),
-                        strokeWidth: 4,
-                      ),
-                    ],
-                  ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+        //),
       ),
     );
   }

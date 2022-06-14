@@ -31,7 +31,10 @@ class _PokemonListPageState extends State<PokemonListPage> {
 
   @override
   void initState() {
-    //_scrollController.addListener(() => setState(() {_showScrollToTopButton = _scrollController.offset > 1200;}));
+    _scrollController.addListener(() => setState(() {
+          _showScrollToTopButton = _scrollController.offset > 1200;
+          debugPrint("a");
+        }));
     super.initState();
     WidgetsBinding.instance
         ?.addPostFrameCallback((_) => {PokemonListPage.firstLaunch = false});
@@ -56,42 +59,40 @@ class _PokemonListPageState extends State<PokemonListPage> {
       key: _scaffoldKey,
       body: Stack(
         children: [
-          FutureBuilder(
-            future: _pokemonsCSV,
-            builder: (context, AsyncSnapshot<List<List<dynamic>>> snapshot) {
-              Widget child;
-              if (snapshot.hasData) {
-                final pokemonList = snapshot.data!;
-                child = _pokemonGrid(pokemonList);
-              } else if (snapshot.hasError) {
-                child = SliverGrid.count(
-                    crossAxisCount: 1,
-                    children: [Text("Error: ${snapshot.error}")]);
-              } else {
-                child = SliverGrid.count(crossAxisCount: 1, children: const [
-                  Padding(
-                    padding: EdgeInsets.all(32),
-                    child: CircularProgressIndicator(),
-                  )
-                ]);
-              }
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: CustomScrollView(
+                //controller: _scrollController,
+                slivers: [
+                  // SafeArea
+                  _singleChildSliver(SizedBox(
+                      height: MediaQuery.of(context).padding.top + 8,
+                      width: double.infinity)),
+                  ..._searchEngine(),
 
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: CustomScrollView(
-                    //controller: _scrollController,
-                    slivers: [
-                      // SafeArea
-                      _singleChildSliver(SizedBox(
-                          height: MediaQuery.of(context).padding.top + 8,
-                          width: double.infinity)),
-                      ..._searchEngine(),
-                      child
-                    ],
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag),
-              );
-            },
+                  FutureBuilder(
+                    future: _pokemonsCSV,
+                    builder:
+                        (context, AsyncSnapshot<List<List<dynamic>>> snapshot) {
+                      Widget child;
+                      if (snapshot.hasData) {
+                        final pokemonList = snapshot.data!;
+                        child = _pokemonGrid(pokemonList);
+                      } else if (snapshot.hasError) {
+                        child = _singleChildSliver(
+                            Text("Error: ${snapshot.error}"));
+                      } else {
+                        child = _singleChildSliver(const Padding(
+                          padding: EdgeInsets.all(32),
+                          child: CircularProgressIndicator(),
+                        ));
+                      }
+                      return child;
+                    },
+                  )
+                ],
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag),
           ),
           _floatingActionButton(),
           _scrollToTopButton(),

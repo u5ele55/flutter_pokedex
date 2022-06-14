@@ -64,7 +64,7 @@ class UserPokemonsSQLite {
     final List<Map<String, dynamic>> raw =
         await db.query('user_pokemons', where: "id = ?", whereArgs: [id]);
 
-    if (raw.length == 0) return null;
+    if (raw.isEmpty) return null;
     return UserPokemon.fromSQL(
         raw[0]["id"], raw[0]["catched"], raw[0]["is_favorite"]);
   }
