@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/bloc/pokemon_list/list_bloc.dart';
 import 'package:pokedex/models/user_pokemons_sqlite.dart';
 
 import 'package:pokedex/pages/content/pokemon_description_block.dart';
@@ -8,10 +10,14 @@ import 'package:pokedex/widgets/stroke_text.dart';
 
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
+import 'content/pokemon_description_favorite_button.dart';
+
 class PokemonDescriptionPage extends StatefulWidget {
-  const PokemonDescriptionPage({Key? key, required this.pokemon})
+  const PokemonDescriptionPage(
+      {Key? key, required this.pokemon, this.userPokemon})
       : super(key: key);
   final Pokemon pokemon;
+  final UserPokemon? userPokemon;
 
   @override
   State<PokemonDescriptionPage> createState() => _PokemonDescriptionPageState();
@@ -25,8 +31,6 @@ class _PokemonDescriptionPageState extends State<PokemonDescriptionPage> {
   final _parallaxPercentage = .05;
   final _sliderRadius = 18.0;
   final _fabOffset = 12.0;
-
-  UserPokemon? userPokemon;
 
   @override
   Widget build(BuildContext context) {
@@ -137,55 +141,12 @@ class _PokemonDescriptionPageState extends State<PokemonDescriptionPage> {
           Positioned(
             top: MediaQuery.of(context).padding.top + _fabOffset,
             right: _fabOffset,
-            child: _favoriteButton(),
+            child: DescriptionFavoriteButton(
+              userPokemon: widget.userPokemon,
+            ),
           ),
         ],
       ),
     );
-  }
-
-  _favoriteButton() => FloatingActionButton(
-        heroTag: "Favorite btn",
-        child: FutureBuilder(
-            future: UserPokemonsSQLite().getDBasList(),
-            builder: (context, AsyncSnapshot<List<UserPokemon>> snapshot) {
-              Widget child;
-              if (snapshot.hasData) {
-                userPokemon =
-                    _findPokemon(snapshot.data!, widget.pokemon.number);
-                child = Icon(
-                  userPokemon!.isFavorite
-                      ? Icons.favorite
-                      : Icons.favorite_border,
-                  color: userPokemon!.isFavorite ? Colors.red : Colors.black,
-                  size: 32,
-                );
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                child = const CircularProgressIndicator();
-              } else {
-                child = const Icon(Icons.error_outline);
-              }
-              return child;
-            }),
-        onPressed: () {
-          if (userPokemon != null) {
-            _toggleFavorite();
-          }
-        },
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        highlightElevation: 0,
-      );
-
-  UserPokemon _findPokemon(List<UserPokemon> list, int id) {
-    for (UserPokemon pokemon in list) {
-      if (id == pokemon.id) return pokemon;
-    }
-    return UserPokemon(id, 1, false);
-  }
-
-  void _toggleFavorite() {
-    setState(() => userPokemon!.isFavorite = userPokemon!.isFavorite);
-    UserPokemonsSQLite().insert(userPokemon!);
   }
 }

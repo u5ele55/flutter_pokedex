@@ -10,12 +10,14 @@ class PokemonListTile extends StatefulWidget {
   const PokemonListTile(
       {Key? key,
       required this.pokemon,
+      this.userPokemon,
       this.displayName = true,
       this.preferPNG = false,
       this.startOpacity = 0.7})
       : super(key: key);
 
   final Pokemon pokemon;
+  final UserPokemon? userPokemon;
   final bool displayName;
   final bool preferPNG;
   final double startOpacity;
@@ -27,8 +29,6 @@ class PokemonListTile extends StatefulWidget {
 class _PokemonListTileState extends State<PokemonListTile> {
   late double _opacity = widget.startOpacity;
   final GlobalKey _cardKey = GlobalKey();
-  late final Future<UserPokemon?> _userPokemon =
-      UserPokemonsSQLite().getById(widget.pokemon.number);
 
   @override
   void initState() {
@@ -52,8 +52,10 @@ class _PokemonListTileState extends State<PokemonListTile> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  PokemonDescriptionPage(pokemon: widget.pokemon),
+              builder: (context) => PokemonDescriptionPage(
+                pokemon: widget.pokemon,
+                userPokemon: widget.userPokemon,
+              ),
             ),
           )
         },
@@ -113,23 +115,14 @@ class _PokemonListTileState extends State<PokemonListTile> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    FutureBuilder(
-                      future: _userPokemon,
-                      builder: (context, AsyncSnapshot<UserPokemon?> snapshot) {
-                        if (snapshot.hasData &&
-                            (snapshot.data?.isFavorite ?? false)) {
-                          return const Padding(
-                            padding: EdgeInsets.all(0.0),
-                            child: Icon(
-                              Icons.favorite_border,
-                              size: 34,
-                            ),
-                          );
-                        } else {
-                          return const SizedBox.shrink();
-                        }
-                      },
-                    ),
+                    if (widget.userPokemon?.isFavorite ?? false)
+                      const Padding(
+                        padding: EdgeInsets.all(0.0),
+                        child: Icon(
+                          Icons.favorite_border,
+                          size: 34,
+                        ),
+                      ),
                     StrokeText(
                       "#${widget.pokemon.number}",
                       style: const TextStyle(

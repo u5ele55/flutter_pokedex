@@ -1,32 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/constants.dart';
 import 'package:pokedex/pages/pokemon_list_page.dart';
+
+import 'bloc/simple_bloc_observer.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const MyApp());
+  BlocOverrides.runZoned(
+    () => runApp(MyApp()),
+    blocObserver: SimpleBlocObserver(),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pokedex',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-        fontFamily: "Pokemon Solid",
-        textTheme: const TextTheme(
-          headline1: TextStyle(
-            fontWeight: FontWeight.w400,
-            letterSpacing: 3,
-            color: yellowPokemonColor,
+class MyApp extends MaterialApp {
+  MyApp({Key? key})
+      : super(
+          key: key,
+          title: 'Pokedex',
+          theme: ThemeData(
+            primarySwatch: Colors.grey,
+            fontFamily: "Pokemon Solid",
+            textTheme: const TextTheme(
+              headline1: TextStyle(
+                fontWeight: FontWeight.w400,
+                letterSpacing: 3,
+                color: yellowPokemonColor,
+              ),
+            ),
           ),
-        ),
-      ),
-      home: const PokemonListPage(),
-    );
-  }
+          home: const PokemonListPage(),
+        );
 }

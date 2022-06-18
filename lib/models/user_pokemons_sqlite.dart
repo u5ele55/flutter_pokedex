@@ -11,6 +11,14 @@ class UserPokemon {
   UserPokemon(this.id, this.catched, this.isFavorite);
   UserPokemon.fromSQL(this.id, this.catched, int isF) : isFavorite = isF == 0;
 
+  UserPokemon copyWith({int? id, int? catched, bool? isFavorite}) {
+    return UserPokemon(
+      id ?? this.id,
+      catched ?? this.catched,
+      isFavorite ?? this.isFavorite,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
