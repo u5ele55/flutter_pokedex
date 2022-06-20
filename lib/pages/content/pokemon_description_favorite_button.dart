@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/bloc/pokemon_list/list_bloc.dart';
 import 'package:pokedex/models/pokemon_data_handler.dart';
 import 'package:pokedex/models/user_pokemons_sqlite.dart';
 
