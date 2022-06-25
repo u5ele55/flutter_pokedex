@@ -1,0 +1,68 @@
+import 'package:flutter/material.dart';
+
+import 'package:pokedex/constants.dart' as constants;
+import 'package:pokedex/models/pokemon_data.dart';
+import 'package:pokedex/pages/content/description/pokemon_description_evolution_graph.dart';
+import 'package:pokedex/pages/content/description/pokemon_description_stats.dart';
+import 'package:pokedex/widgets/stroke_text.dart';
+
+class PokemonDescriptionBlock extends StatelessWidget {
+  const PokemonDescriptionBlock(this.pokemon, {Key? key, this.scrollController})
+      : super(key: key);
+
+  final Pokemon pokemon;
+  final ScrollController? scrollController;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      controller: scrollController,
+      //shrinkWrap: true,
+      children: [
+        SizedBox(height: MediaQuery.of(context).padding.top + 8),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: StrokeText(
+              pokemon.name,
+              style: Theme.of(context).textTheme.headline1?.merge(
+                    const TextStyle(
+                      shadows: [Shadow(color: Colors.white, blurRadius: 4)],
+                      fontSize: 32,
+                    ),
+                  ),
+              strokeColor: constants.bluePokemonColor,
+              strokeWidth: 4,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 4),
+              _headline("Stats"),
+              PokemonStatsBlock(pokemon),
+              const SizedBox(height: 16),
+              _headline("Evolution chart"),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+        PokemonEvolutionGraph(pokemon),
+      ],
+    );
+  }
+
+  StrokeText _headline(String text) => StrokeText(
+        text,
+        strokeWidth: 4,
+        style: const TextStyle(
+          fontSize: 32,
+          color: Colors.white,
+          letterSpacing: 5,
+        ),
+        textAlign: TextAlign.center,
+      );
+}

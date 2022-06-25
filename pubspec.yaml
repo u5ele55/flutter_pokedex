@@ -60,6 +60,9 @@ flutter:
     - family: Pokemon Hollow
       fonts:
         - asset: assets/fonts/Pokemon Hollow.ttf
+    - family: Merchant Copy
+      fonts:
+        - asset: assets/fonts/Merchant Copy.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

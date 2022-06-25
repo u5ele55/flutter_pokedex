@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'package:pokedex/models/user_pokemons_sqlite.dart';
-import 'package:pokedex/pages/content/pokemon_description_block.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/utils.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
 
-import 'package:sliding_up_panel/sliding_up_panel.dart';
-
-import 'content/pokemon_description_favorite_button.dart';
+import 'content/description/pokemon_description_block.dart';
+import 'content/description/pokemon_description_favorite_button.dart';
 
 class PokemonDescriptionPage extends StatefulWidget {
   const PokemonDescriptionPage(

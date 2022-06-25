@@ -78,7 +78,6 @@ class PokemonDataHandler {
       }
     } else {
       // Query is pure string
-
       for (PokemonFullData pokemon in loadedData) {
         if (pokemon.pokemonData.name.toLowerCase().contains(query)) {
           res.add(pokemon);
@@ -88,33 +87,42 @@ class PokemonDataHandler {
 
     // Filtered by name and ids so far
     // Filtering by types:
-    List<PokemonFullData> resWithTypes = [];
+    List<PokemonFullData> resOld = res;
+    res = [];
 
-    for (PokemonFullData pokemon in res) {
+    for (PokemonFullData pokemon in resOld) {
       PokemonType? type1 = pokemon.pokemonData.firstType,
           type2 = pokemon.pokemonData.secondType;
 
       bool added = false;
       if (type1 != null && searchConfig.types[type1]!) {
-        resWithTypes.add(pokemon);
+        res.add(pokemon);
         added = true;
       }
       if (!added && type2 != null && searchConfig.types[type2]!) {
-        resWithTypes.add(pokemon);
+        res.add(pokemon);
       }
     }
     // Filter by favorite
     if (searchConfig.isFavorites) {
-      List<PokemonFullData> resWithTypesAndFavorites = [];
+      resOld = res;
+      res = [];
 
-      for (PokemonFullData pokemon in resWithTypes) {
+      for (PokemonFullData pokemon in resOld) {
         if (pokemon.userData?.isFavorite ?? false) {
-          resWithTypesAndFavorites.add(pokemon);
+          res.add(pokemon);
         }
       }
-
-      return resWithTypesAndFavorites;
     }
-    return resWithTypes;
+    // Filter by generation
+    resOld = res;
+    res = [];
+    for (PokemonFullData pokemon in resOld) {
+      int gen = pokemon.pokemonData.generation;
+      if (searchConfig.generations[gen] ?? false) {
+        res.add(pokemon);
+      }
+    }
+    return res;
   }
 }

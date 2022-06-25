@@ -16,6 +16,8 @@ class ProgressBarWithTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const textStyle = TextStyle(
+        fontSize: 32, fontWeight: FontWeight.w800, fontFamily: "Merchant Copy");
     return Column(
       children: [
         Padding(
@@ -25,11 +27,11 @@ class ProgressBarWithTitle extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 16, letterSpacing: 1),
+                style: textStyle,
               ),
               Text(
                 value,
-                style: const TextStyle(fontSize: 16, letterSpacing: 1),
+                style: textStyle,
               ),
             ],
           ),

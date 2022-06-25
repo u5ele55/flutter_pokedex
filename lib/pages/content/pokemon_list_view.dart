@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/bloc/pokemon_list/list_bloc.dart';
-import 'package:pokedex/pages/content/pokemon_list_search_block.dart';
 import 'package:pokedex/widgets/pokemon_list_tile.dart';
 import 'package:pokedex/widgets/single_child_sliver.dart';
+
+import 'list_search/pokemon_list_search_block.dart';
+import 'pokemon_list_bottom_loader.dart';
 
 class PokemonListView extends StatefulWidget {
   const PokemonListView({Key? key}) : super(key: key);
@@ -41,9 +43,10 @@ class _PokemonListViewState extends State<PokemonListView> {
             slivers: [
               // SafeArea
               SimpleSliver(
-                  child: SizedBox(
-                height: MediaQuery.of(context).padding.top + 8,
-              )),
+                child: SizedBox(
+                  height: MediaQuery.of(context).padding.top + 8,
+                ),
+              ),
               const PokemonListSearchBlock(),
               SliverGrid(
                 delegate: SliverChildBuilderDelegate(
@@ -59,10 +62,6 @@ class _PokemonListViewState extends State<PokemonListView> {
                       preferPNG: true,
                     );
                   },
-                  // Is this really helped to boost performance??
-                  //addAutomaticKeepAlives: false,
-                  //addSemanticIndexes: false,
-                  //addRepaintBoundaries: false,
                   childCount: state.hasReachedMax
                       ? state.pokemons.length
                       : state.pokemons.length + state.pokemons.length % 2 + 2,
@@ -92,20 +91,5 @@ class _PokemonListViewState extends State<PokemonListView> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
     return currentScroll >= (maxScroll * 0.9);
-  }
-}
-
-class BottomLoader extends StatelessWidget {
-  const BottomLoader({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: SizedBox(
-        height: 24,
-        width: 24,
-        child: CircularProgressIndicator(strokeWidth: 1.5),
-      ),
-    );
   }
 }
