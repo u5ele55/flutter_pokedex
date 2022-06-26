@@ -23,7 +23,7 @@ class PokemonListSearchBlock extends StatelessWidget {
                       .add(ListQueryChanged(state.searchConfig));
                 },
                 onSubmitted: (_) => {FocusScope.of(context).unfocus()},
-                style: const TextStyle(letterSpacing: 2),
+                style: const TextStyle(fontSize: 32),
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
                   border: OutlineInputBorder(

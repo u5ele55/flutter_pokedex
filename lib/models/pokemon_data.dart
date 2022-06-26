@@ -125,7 +125,10 @@ class Pokemon {
 
   @override
   String toString() {
-    return "<Pokemon | id: $number | name: $name>";
+    return "<Pokemon | id: $number | name: $name | types: ${[
+      firstType,
+      secondType
+    ]}>";
   }
 }
 
@@ -156,129 +159,37 @@ enum PokemonType {
 
 PokemonType? typeFromString(String type) {
   type = type.toLowerCase();
-  PokemonType? ptype;
-  switch (type) {
-    case "bug":
-      ptype = PokemonType.bug;
-      break;
-    case "dark":
-      ptype = PokemonType.dark;
-      break;
-    case "dragon":
-      ptype = PokemonType.dragon;
-      break;
-    case "electric":
-      ptype = PokemonType.electric;
-      break;
-    case "fighting":
-      ptype = PokemonType.fighting;
-      break;
-    case "fairy":
-      ptype = PokemonType.fairy;
-      break;
-    case "fire":
-      ptype = PokemonType.fire;
-      break;
-    case "flying":
-      ptype = PokemonType.flying;
-      break;
-    case "ghost":
-      ptype = PokemonType.ghost;
-      break;
-    case "grass":
-      ptype = PokemonType.grass;
-      break;
-    case "ground":
-      ptype = PokemonType.ground;
-      break;
-    case "ice":
-      ptype = PokemonType.ice;
-      break;
-    case "normal":
-      ptype = PokemonType.normal;
-      break;
-    case "poison":
-      ptype = PokemonType.poison;
-      break;
-    case "psychic":
-      ptype = PokemonType.psychic;
-      break;
-    case "rock":
-      ptype = PokemonType.rock;
-      break;
-    case "steel":
-      ptype = PokemonType.steel;
-      break;
-    case "water":
-      ptype = PokemonType.water;
-      break;
-    default:
-      ptype = null;
+  for (PokemonType ptype in PokemonType.values) {
+    if (ptype.toString().split('.').contains(type)) {
+      return ptype;
+    }
   }
-  return ptype;
+  return null;
 }
 
 Color? getTypeColor(PokemonType? type) {
-  String? hexString;
-  switch (type) {
-    case PokemonType.bug:
-      hexString = "A6B91A";
-      break;
-    case PokemonType.dark:
-      hexString = "705746";
-      break;
-    case PokemonType.dragon:
-      hexString = "6F35FC";
-      break;
-    case PokemonType.electric:
-      hexString = "F7D02C";
-      break;
-    case PokemonType.fairy:
-      hexString = "D685AD";
-      break;
-    case PokemonType.fighting:
-      hexString = "C22E28";
-      break;
-    case PokemonType.fire:
-      hexString = "EE8130";
-      break;
-    case PokemonType.flying:
-      hexString = "A98FF3";
-      break;
-    case PokemonType.ghost:
-      hexString = "735797";
-      break;
-    case PokemonType.grass:
-      hexString = "7AC74C";
-      break;
-    case PokemonType.ground:
-      hexString = "E2BF65";
-      break;
-    case PokemonType.ice:
-      hexString = "96D9D6";
-      break;
-    case PokemonType.normal:
-      hexString = "A8A77A";
-      break;
-    case PokemonType.poison:
-      hexString = "A33EA1";
-      break;
-    case PokemonType.psychic:
-      hexString = "F95587";
-      break;
-    case PokemonType.rock:
-      hexString = "B6A136";
-      break;
-    case PokemonType.steel:
-      hexString = "B7B7CE";
-      break;
-    case PokemonType.water:
-      hexString = "6390F0";
-      break;
-    case null:
-      hexString = null;
-      break;
-  }
-
-  return hexString == null ? null : Color(int.parse("0xFF" + hexString));
+  if (type == null) return null;
+  Map<PokemonType, String> typeToColor = {
+    PokemonType.bug: "A6B91A",
+    PokemonType.dark: "705746",
+    PokemonType.dragon: "6F35FC",
+    PokemonType.electric: "F7D02C",
+    PokemonType.fairy: "D685AD",
+    PokemonType.fighting: "C22E28",
+    PokemonType.fire: "EE8130",
+    PokemonType.flying: "A98FF3",
+    PokemonType.ghost: "735797",
+    PokemonType.grass: "7AC74C",
+    PokemonType.ground: "E2BF65",
+    PokemonType.ice: "96D9D6",
+    PokemonType.normal: "A8A77A",
+    PokemonType.poison: "A33EA1",
+    PokemonType.psychic: "F95587",
+    PokemonType.rock: "B6A136",
+    PokemonType.steel: "B7B7CE",
+    PokemonType.water: "6390F0",
+  };
+  return typeToColor[type] == null
+      ? null
+      : Color(int.parse("0xFF" + typeToColor[type]!));
 }

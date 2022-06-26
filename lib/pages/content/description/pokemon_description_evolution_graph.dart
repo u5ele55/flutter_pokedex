@@ -14,7 +14,6 @@ class PokemonEvolutionGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("rebuild");
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: _evolGraph(),
@@ -90,6 +89,7 @@ class PokemonEvolutionGraph extends StatelessWidget {
                 fontSize: 18,
                 letterSpacing: 3,
                 color: Colors.white,
+                fontFamily: "Pokemon Solid",
               ),
             ),
           ),

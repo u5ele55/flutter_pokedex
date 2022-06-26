@@ -21,7 +21,7 @@ class MyApp extends MaterialApp {
           title: 'Pokedex',
           theme: ThemeData(
             primarySwatch: Colors.grey,
-            fontFamily: "Pokemon Solid",
+            fontFamily: "Merchant Copy",
             textTheme: const TextTheme(
               headline1: TextStyle(
                 fontWeight: FontWeight.w400,

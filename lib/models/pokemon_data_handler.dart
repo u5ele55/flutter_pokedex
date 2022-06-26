@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:pokedex/constants.dart' as constants;
+import 'package:pokedex/models/pokemon_json_data.dart';
+import 'package:pokedex/services/api_pokedex_service.dart';
 
 import 'csv_handler.dart';
 import 'pokemon_data.dart';
@@ -124,5 +126,11 @@ class PokemonDataHandler {
       }
     }
     return res;
+  }
+
+  Future<List<PokemonOnlineData>?> getOnlinePokemon(int id) async {
+    List<PokemonOnlineData>? data =
+        await ApiPokedexService().getPokemonData(id);
+    return data;
   }
 }

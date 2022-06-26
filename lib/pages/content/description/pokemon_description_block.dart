@@ -15,11 +15,12 @@ class PokemonDescriptionBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("rebuild DB");
     return ListView(
       controller: scrollController,
       //shrinkWrap: true,
       children: [
-        SizedBox(height: MediaQuery.of(context).padding.top + 8),
+        SizedBox(height: MediaQuery.of(context).padding.top),
         Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -29,6 +30,7 @@ class PokemonDescriptionBlock extends StatelessWidget {
                     const TextStyle(
                       shadows: [Shadow(color: Colors.white, blurRadius: 4)],
                       fontSize: 32,
+                      fontFamily: "Pokemon Solid",
                     ),
                   ),
               strokeColor: constants.bluePokemonColor,
@@ -51,18 +53,24 @@ class PokemonDescriptionBlock extends StatelessWidget {
           ),
         ),
         PokemonEvolutionGraph(pokemon),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: Column(
+            children: [],
+          ),
+        ),
       ],
     );
   }
 
-  StrokeText _headline(String text) => StrokeText(
+  StrokeText _headline(String text, [double fontSize = 32]) => StrokeText(
         text,
         strokeWidth: 4,
-        style: const TextStyle(
-          fontSize: 32,
-          color: Colors.white,
-          letterSpacing: 5,
-        ),
+        style: TextStyle(
+            fontSize: fontSize,
+            color: Colors.white,
+            letterSpacing: 5,
+            fontFamily: "Pokemon Solid"),
         textAlign: TextAlign.center,
       );
 }

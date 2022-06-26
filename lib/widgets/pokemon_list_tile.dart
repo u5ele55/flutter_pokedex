@@ -101,6 +101,7 @@ class _PokemonListTileState extends State<PokemonListTile> {
                         ?.merge(const TextStyle(
                           shadows: [Shadow(color: Colors.white, blurRadius: 4)],
                           fontSize: 20,
+                          fontFamily: "Pokemon Solid",
                         )),
                     strokeColor: constants.bluePokemonColor,
                     strokeWidth: 4,
@@ -112,7 +113,9 @@ class _PokemonListTileState extends State<PokemonListTile> {
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: (widget.userPokemon?.isFavorite ?? false)
+                      ? MainAxisAlignment.spaceBetween
+                      : MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (widget.userPokemon?.isFavorite ?? false)
@@ -132,6 +135,7 @@ class _PokemonListTileState extends State<PokemonListTile> {
                         fontWeight: FontWeight.w100,
                         shadows: [Shadow(color: Colors.white, blurRadius: 22)],
                         fontStyle: FontStyle.italic,
+                        fontFamily: "Pokemon Solid",
                       ),
                       strokeWidth: 4,
                     ),
