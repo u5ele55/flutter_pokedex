@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/bloc/pokemon_description/description_bloc.dart';
 import 'package:pokedex/pages/content/pokemon_description_view.dart';
 
 import 'package:pokedex/models/user_pokemons_sqlite.dart';
@@ -22,9 +24,13 @@ class PokemonDescriptionPage extends StatelessWidget {
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
-          PokemonDescriptionView(
-            pokemon: pokemon,
-            userPokemon: userPokemon,
+          BlocProvider(
+            create: (_) => DescriptionBloc()
+              ..add(LoadDescriptionOnlineData(pokemon.number)),
+            child: PokemonDescriptionView(
+              pokemon: pokemon,
+              userPokemon: userPokemon,
+            ),
           ),
           Positioned(
             top: MediaQuery.of(context).padding.top + _fabOffset,

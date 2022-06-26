@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:pokedex/bloc/pokemon_list/list_bloc.dart';
+import 'package:pokedex/widgets/circle_loading.dart';
 import 'package:pokedex/widgets/pokemon_list_tile.dart';
 import 'package:pokedex/widgets/single_child_sliver.dart';
 
 import 'list_search/pokemon_list_search_block.dart';
-import 'pokemon_list_bottom_loader.dart';
 
 class PokemonListView extends StatefulWidget {
   const PokemonListView({Key? key}) : super(key: key);
@@ -36,7 +37,7 @@ class _PokemonListViewState extends State<PokemonListView> {
     return BlocBuilder<ListBloc, ListState>(
       builder: (context, state) {
         if (state.status == ListStatus.initial) {
-          return const BottomLoader();
+          return const CircleLoading();
         } else if (state.status == ListStatus.success) {
           return CustomScrollView(
             controller: _scrollController,
@@ -52,7 +53,7 @@ class _PokemonListViewState extends State<PokemonListView> {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     if (index >= state.pokemons.length) {
-                      return const BottomLoader();
+                      return const CircleLoading();
                     }
                     var pokemonData = state.pokemons[index].pokemonData;
                     var userData = state.pokemons[index].userData;
@@ -90,6 +91,6 @@ class _PokemonListViewState extends State<PokemonListView> {
     if (!_scrollController.hasClients) return false;
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
+    return currentScroll >= (maxScroll - 36);
   }
 }

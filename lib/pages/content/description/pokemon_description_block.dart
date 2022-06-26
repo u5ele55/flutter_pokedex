@@ -6,6 +6,8 @@ import 'package:pokedex/pages/content/description/pokemon_description_evolution_
 import 'package:pokedex/pages/content/description/pokemon_description_stats.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
 
+import 'online_data/online_data.dart';
+
 class PokemonDescriptionBlock extends StatelessWidget {
   const PokemonDescriptionBlock(this.pokemon, {Key? key, this.scrollController})
       : super(key: key);
@@ -15,7 +17,6 @@ class PokemonDescriptionBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("rebuild DB");
     return ListView(
       controller: scrollController,
       //shrinkWrap: true,
@@ -43,6 +44,7 @@ class PokemonDescriptionBlock extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: Column(
             children: [
+              const OnlinePokemonDescription(),
               const SizedBox(height: 4),
               _headline("Stats"),
               PokemonStatsBlock(pokemon),
