@@ -32,7 +32,8 @@ class PokemonGenerationFilterButton extends StatelessWidget {
               toRomanNumber(generation),
               style: TextStyle(
                 letterSpacing: 1,
-                fontSize: 18,
+                fontFamily: "Pokemon Solid",
+                fontSize: 22,
                 color: isActive ? Colors.black : Colors.grey,
               ),
             ),

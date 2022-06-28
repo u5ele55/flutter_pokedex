@@ -28,7 +28,8 @@ class PokemonChooseAllTypesButton extends StatelessWidget {
           "Choose All",
           style: TextStyle(
             letterSpacing: 1,
-            fontSize: 16,
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
             color: _getAllBitAnd(state.searchConfig.types.values)
                 ? Colors.black
                 : Colors.grey,

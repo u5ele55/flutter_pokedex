@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/bloc/pokemon_description/description_bloc.dart';
+import 'package:pokedex/bloc/pokemon_favorite/favorite_bloc.dart';
+import 'package:pokedex/bloc/pokemon_list/list_bloc.dart';
 import 'package:pokedex/pages/content/pokemon_description_view.dart';
 
 import 'package:pokedex/models/user_pokemons_sqlite.dart';
@@ -19,39 +21,59 @@ class PokemonDescriptionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Global rebuild");
-    return Scaffold(
-      body: Stack(
-        alignment: Alignment.topCenter,
-        children: [
+    return MultiBlocProvider(
+        providers: [
           BlocProvider(
             create: (_) => DescriptionBloc()
               ..add(LoadDescriptionOnlineData(pokemon.number)),
-            child: PokemonDescriptionView(
-              pokemon: pokemon,
-              userPokemon: userPokemon,
-            ),
           ),
-          Positioned(
-            top: MediaQuery.of(context).padding.top + _fabOffset,
-            left: _fabOffset,
-            child: FloatingActionButton.small(
-              child: const Icon(Icons.arrow_back, color: Colors.black),
-              onPressed: () => Navigator.of(context).pop(),
-              backgroundColor: Colors.white,
-              elevation: 6,
-              highlightElevation: 4,
-            ),
-          ),
-          Positioned(
-            top: MediaQuery.of(context).padding.top + _fabOffset,
-            right: _fabOffset,
-            child: DescriptionFavoriteButton(
-              userPokemon: userPokemon,
-            ),
-          ),
+          BlocProvider(
+              create: (_) =>
+                  FavoriteBloc()..add(ShowFavoriteLabel(pokemon.number))),
+          BlocProvider(create: (_) => ListBloc()),
         ],
-      ),
-    );
+        child: WillPopScope(
+          onWillPop: () async {
+            if (context.read<FavoriteBloc>().state.status !=
+                FavoriteStatus.initial) {
+              context
+                  .read<ListBloc>()
+                  .add(UserPokemonDataChanged(pokemon.number));
+            }
+            // TODO why not working????
+            print("popa");
+            return false;
+          },
+          child: Scaffold(
+            body: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                PokemonDescriptionView(
+                  pokemon: pokemon,
+                  userPokemon: userPokemon,
+                ),
+                Positioned(
+                  top: MediaQuery.of(context).padding.top + _fabOffset,
+                  left: _fabOffset,
+                  child: FloatingActionButton.small(
+                    child: const Icon(Icons.arrow_back, color: Colors.black),
+                    onPressed: () => Navigator.of(context).pop(),
+                    backgroundColor: Colors.white,
+                    elevation: 6,
+                    highlightElevation: 4,
+                  ),
+                ),
+                Positioned(
+                  top: MediaQuery.of(context).padding.top + _fabOffset,
+                  right: _fabOffset,
+                  child: DescriptionFavoriteButton(
+                    userPokemon:
+                        userPokemon ?? UserPokemon(pokemon.number, 1, false),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }

@@ -28,7 +28,8 @@ class PokemonFavoritesFilterButton extends StatelessWidget {
               "Favorites",
               style: TextStyle(
                 letterSpacing: 1,
-                fontSize: 16,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
                 color:
                     state.searchConfig.isFavorites ? Colors.black : Colors.grey,
               ),

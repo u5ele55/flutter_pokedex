@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:pokedex/models/pokemon_data_handler.dart';
 import 'package:pokedex/models/search_config.dart';
-import 'package:pokedex/models/user_pokemons_sqlite.dart';
 
 part 'list_event.dart';
 part 'list_state.dart';
@@ -13,7 +12,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
   ListBloc() : super(ListState()) {
     on<ListTilesLoaded>(_onTilesLoaded);
     on<ListQueryChanged>(_onQueryChanged);
-    on<ChangeUserPokemonData>(_onUserPokemonChanged);
+    on<UserPokemonDataChanged>(_onUserPokemonChanged);
   }
 
   Future<void> _onTilesLoaded(
@@ -68,8 +67,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
   }
 
   Future<void> _onUserPokemonChanged(
-      ChangeUserPokemonData event, Emitter<ListState> emit) async {
-    PokemonDataHandler().changeUserData(event.data);
+      UserPokemonDataChanged event, Emitter<ListState> emit) async {
     final pokemons =
         await _fetchPokemons(startIndex: 0, length: state.lastIndex);
     return emit(state.copyWith(

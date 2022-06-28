@@ -1,41 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/models/pokemon_data_handler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/bloc/pokemon_favorite/favorite_bloc.dart';
 import 'package:pokedex/models/user_pokemons_sqlite.dart';
 
-class DescriptionFavoriteButton extends StatefulWidget {
-  const DescriptionFavoriteButton({Key? key, this.userPokemon})
+class DescriptionFavoriteButton extends StatelessWidget {
+  const DescriptionFavoriteButton({Key? key, required this.userPokemon})
       : super(key: key);
-  final UserPokemon? userPokemon;
+  final UserPokemon userPokemon;
 
-  @override
-  State<DescriptionFavoriteButton> createState() =>
-      _DescriptionFavoriteButtonState();
-}
-
-class _DescriptionFavoriteButtonState extends State<DescriptionFavoriteButton> {
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      heroTag: "Favorite btn",
-      child: Icon(
-        (widget.userPokemon?.isFavorite ?? false)
-            ? Icons.favorite
-            : Icons.favorite_border,
-        color: (widget.userPokemon?.isFavorite ?? false)
-            ? Colors.red
-            : Colors.black,
-        size: 32,
+    return BlocBuilder<FavoriteBloc, FavoriteState>(
+      builder: (context, state) => FloatingActionButton(
+        heroTag: "Favorite btn",
+        child: Icon(
+          (state.isFavorite ?? false) ? Icons.favorite : Icons.favorite_border,
+          color: (state.isFavorite ?? false) ? Colors.red : Colors.black,
+          size: 32,
+        ),
+        onPressed: () {
+          context.read<FavoriteBloc>().add(ToggleFavorite(userPokemon.id));
+        },
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        highlightElevation: 0,
       ),
-      onPressed: () {
-        if (widget.userPokemon != null) {
-          setState(() =>
-              widget.userPokemon!.isFavorite = !widget.userPokemon!.isFavorite);
-          PokemonDataHandler().changeUserData(widget.userPokemon!);
-        }
-      },
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      highlightElevation: 0,
     );
   }
 }

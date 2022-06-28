@@ -12,7 +12,7 @@ class ListQueryChanged extends ListEvent {
   final SearchConfig searchConfig;
 }
 
-class ChangeUserPokemonData extends ListEvent {
-  final UserPokemon data;
-  ChangeUserPokemonData(this.data);
+class UserPokemonDataChanged extends ListEvent {
+  final int id;
+  UserPokemonDataChanged(this.id);
 }

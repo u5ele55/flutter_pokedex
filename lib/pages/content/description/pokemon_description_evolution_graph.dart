@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:pokedex/models/pokemon_data.dart';
+import 'package:pokedex/models/pokemon_data_handler.dart';
 import 'package:pokedex/widgets/pokemon_list_tile.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
 
@@ -56,7 +57,7 @@ class PokemonEvolutionGraph extends StatelessWidget {
   }
 
   evolutionNodeWidget(id) {
-    Pokemon nextPokemon = Pokemon.fromList(getPokemonListById(id));
+    Pokemon nextPokemon = PokemonDataHandler.getPokemonById(id)!.pokemonData;
     double blockWidth = 192;
     return Column(
       children: [

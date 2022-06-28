@@ -55,12 +55,14 @@ class PokemonDescriptionBlock extends StatelessWidget {
           ),
         ),
         PokemonEvolutionGraph(pokemon),
+        //
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: Column(
             children: [],
           ),
         ),
+        //
       ],
     );
   }

@@ -49,6 +49,20 @@ class PokemonDataHandler {
     UserPokemonsSQLite().insert(data);
   }
 
+  static PokemonFullData? getPokemonById(int id) {
+    List raw =
+        CSVHandler.getByFieldValue(0, id, constants.pathToPokemonCsv) ?? [];
+    if (raw.isNotEmpty) {
+      Pokemon pData = Pokemon.fromList(raw);
+      for (int i = 0; i < (_savedPokemonData?.length ?? 0); i++) {
+        if (_savedPokemonData![i].pokemonData.number == pData.number) {
+          return _savedPokemonData![i];
+        }
+      }
+    }
+    return null;
+  }
+
   Future<List<List<dynamic>>> filterByUniqueId(
       Future<List<List<dynamic>>> fields) async {
     List<List<dynamic>> filtered = [];

@@ -31,8 +31,9 @@ class PokemonTypeButton extends StatelessWidget {
             child: Text(
               type.toString().split('.')[1],
               style: TextStyle(
-                letterSpacing: 1,
-                fontSize: 16,
+                letterSpacing: .5,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
                 color: isActive ? Colors.black : Colors.grey,
               ),
             ),

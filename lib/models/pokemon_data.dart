@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pokedex/constants.dart';
 import 'package:pokedex/models/csv_handler.dart';
 import 'package:pokedex/models/graph.dart';
+import 'package:pokedex/models/pokemon_data_handler.dart';
 import 'package:pokedex/utils.dart';
 
 import 'package:stack/stack.dart' as stack;
@@ -113,9 +114,10 @@ class Pokemon {
       evolutionGraph.addNode(
           null, parent.number, Node(parent, null, parent.evolvesTo ?? []));
       for (int childID in parent.evolvesTo ?? []) {
-        List childList = getPokemonListById(childID);
-        if (childList.isNotEmpty) {
-          pokemonStack.push(Pokemon.fromList(childList));
+        Pokemon? childPokemon =
+            PokemonDataHandler.getPokemonById(childID)?.pokemonData;
+        if (childPokemon != null) {
+          pokemonStack.push(childPokemon);
         }
       }
     }
@@ -130,10 +132,6 @@ class Pokemon {
       secondType
     ]}>";
   }
-}
-
-List getPokemonListById(int id) {
-  return CSVHandler.getByFieldValue(0, id, pathToPokemonCsv) ?? [];
 }
 
 enum PokemonType {
