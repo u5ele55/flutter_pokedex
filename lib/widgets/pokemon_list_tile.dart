@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/bloc/pokemon_list/list_bloc.dart';
 import 'package:pokedex/constants.dart' as constants;
 import 'package:pokedex/decorators/pokemon_tile_ornament.dart';
 import 'package:pokedex/models/pokemon_data.dart';
@@ -6,35 +8,23 @@ import 'package:pokedex/models/user_pokemons_sqlite.dart';
 import 'package:pokedex/pages/pokemon_description_page.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
 
-class PokemonListTile extends StatefulWidget {
-  const PokemonListTile(
-      {Key? key,
-      required this.pokemon,
-      this.userPokemon,
-      this.displayName = true,
-      this.preferPNG = false,
-      this.startOpacity = 0.7})
-      : super(key: key);
+class PokemonListTile extends StatelessWidget {
+  PokemonListTile({
+    Key? key,
+    required this.pokemon,
+    this.userPokemon,
+    this.displayName = true,
+    this.preferPNG = false,
+    this.entryOfList = false,
+  }) : super(key: key);
 
   final Pokemon pokemon;
   final UserPokemon? userPokemon;
   final bool displayName;
   final bool preferPNG;
-  final double startOpacity;
+  final bool entryOfList;
 
-  @override
-  State<PokemonListTile> createState() => _PokemonListTileState();
-}
-
-class _PokemonListTileState extends State<PokemonListTile> {
-  late double _opacity = widget.startOpacity;
   final GlobalKey _cardKey = GlobalKey();
-
-  @override
-  void initState() {
-    debugPrint("Init ${widget.pokemon.number}");
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,54 +37,35 @@ class _PokemonListTileState extends State<PokemonListTile> {
       ),
       elevation: 5,
       child: InkWell(
-        onTap: () => {
-          FocusScope.of(context).unfocus(),
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PokemonDescriptionPage(
-                pokemon: widget.pokemon,
-                userPokemon: widget.userPokemon,
-              ),
-            ),
-          )
-        },
-        //child: Listener(
-        //onPointerDown: (_) => {setState(() => _opacity = 1)},
-        //onPointerUp: (_) => {setState(() => _opacity = widget.startOpacity)},
+        onTap: () => _onTap(context),
         child: Stack(
           children: [
-            /*AnimatedOpacity(
-                curve: Curves.easeIn,
-                opacity: _opacity,
-                duration: const Duration(milliseconds: 100),
-                child: */
+            // ORNAMENT
             CustomPaint(
               child: Padding(
-                padding: widget.preferPNG
+                padding: preferPNG
                     ? const EdgeInsets.all(0)
                     : const EdgeInsets.all(12),
                 child: Center(
-                  child: widget.pokemon
-                      .getImageWidget(preferPNG: widget.preferPNG),
+                  child: pokemon.getImageWidget(preferPNG: preferPNG),
                 ),
               ),
-              foregroundPainter: getTypeColor(widget.pokemon.secondType) == null
+              foregroundPainter: getTypeColor(pokemon.secondType) == null
                   ? null
-                  : CurvedPainter(getTypeColor(widget.pokemon.secondType)!,
+                  : CurvedPainter(getTypeColor(pokemon.secondType)!,
                       isSecondType: true),
-              painter: getTypeColor(widget.pokemon.firstType) == null
+              painter: getTypeColor(pokemon.firstType) == null
                   ? null
-                  : CurvedPainter(getTypeColor(widget.pokemon.firstType)!),
+                  : CurvedPainter(getTypeColor(pokemon.firstType)!),
             ),
-            //),
-            if (widget.displayName)
+            // NAME
+            if (displayName)
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: StrokeText(
-                    widget.pokemon.name,
+                    pokemon.name,
                     style: Theme.of(context)
                         .textTheme
                         .headline1
@@ -108,17 +79,18 @@ class _PokemonListTileState extends State<PokemonListTile> {
                   ),
                 ),
               ),
+            // ID
             Align(
               alignment: Alignment.topRight,
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Row(
-                  mainAxisAlignment: (widget.userPokemon?.isFavorite ?? false)
+                  mainAxisAlignment: (userPokemon?.isFavorite ?? false)
                       ? MainAxisAlignment.spaceBetween
                       : MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if (widget.userPokemon?.isFavorite ?? false)
+                    if (userPokemon?.isFavorite ?? false)
                       const Padding(
                         padding: EdgeInsets.all(0.0),
                         child: Icon(
@@ -127,7 +99,7 @@ class _PokemonListTileState extends State<PokemonListTile> {
                         ),
                       ),
                     StrokeText(
-                      "#${widget.pokemon.number}",
+                      "#${pokemon.number}",
                       style: const TextStyle(
                         fontSize: 24,
                         color: Colors.white,
@@ -145,8 +117,23 @@ class _PokemonListTileState extends State<PokemonListTile> {
             ),
           ],
         ),
-        //),
       ),
     );
+  }
+
+  void _onTap(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PokemonDescriptionPage(
+          pokemon: pokemon,
+          userPokemon: userPokemon,
+        ),
+      ),
+    );
+    if (entryOfList) {
+      context.read<ListBloc>().add(UserPokemonDataChanged(pokemon.number));
+    }
   }
 }

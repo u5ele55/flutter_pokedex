@@ -20,9 +20,12 @@ class DescriptionBloc extends Bloc<DescriptionEvent, DescriptionState> {
         status: DescriptionStatus.failure,
       ));
     }
-    return emit(state.copyWith(
-      status: DescriptionStatus.success,
-      pokemonData: pokemonData,
-    ));
+    return emit(
+      state.copyWith(
+        status: DescriptionStatus.success,
+        pokemonData: pokemonData,
+        currentPokemon: pokemonData[0],
+      ),
+    );
   }
 }

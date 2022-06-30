@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/constants.dart' as constants;
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/pages/content/description/pokemon_description_evolution_graph.dart';
+import 'package:pokedex/pages/content/description/pokemon_description_headline.dart';
 import 'package:pokedex/pages/content/description/pokemon_description_stats.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
 
@@ -21,7 +22,7 @@ class PokemonDescriptionBlock extends StatelessWidget {
       controller: scrollController,
       //shrinkWrap: true,
       children: [
-        SizedBox(height: MediaQuery.of(context).padding.top),
+        //SizedBox(height: MediaQuery.of(context).padding.top),
         Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -46,35 +47,18 @@ class PokemonDescriptionBlock extends StatelessWidget {
             children: [
               const OnlinePokemonDescription(),
               const SizedBox(height: 4),
-              _headline("Stats"),
+              const Headline("Stats"),
               PokemonStatsBlock(pokemon),
               const SizedBox(height: 16),
-              _headline("Evolution chart"),
+              const Headline("Evolution chart"),
               const SizedBox(height: 16),
             ],
           ),
         ),
         PokemonEvolutionGraph(pokemon),
-        //
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: Column(
-            children: [],
-          ),
-        ),
-        //
+        const SizedBox(height: 16),
+        const OnlinePokemonInformationBlock(),
       ],
     );
   }
-
-  StrokeText _headline(String text, [double fontSize = 32]) => StrokeText(
-        text,
-        strokeWidth: 4,
-        style: TextStyle(
-            fontSize: fontSize,
-            color: Colors.white,
-            letterSpacing: 5,
-            fontFamily: "Pokemon Solid"),
-        textAlign: TextAlign.center,
-      );
 }

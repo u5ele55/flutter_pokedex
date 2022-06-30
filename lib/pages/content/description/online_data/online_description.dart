@@ -17,11 +17,14 @@ class OnlinePokemonDescription extends StatelessWidget {
             return const CircleLoading();
           case DescriptionStatus.success:
             return Text(
-              state.pokemonData[0].description ?? 'No description.',
+              state.currentPokemon!.description ?? 'No description.',
               style: const TextStyle(fontSize: 28),
             );
           default:
-            return const Text("Unable to load description.");
+            return const Text(
+              "Unable to load online data.",
+              style: TextStyle(fontSize: 28, color: Colors.redAccent),
+            );
         }
       }),
     );

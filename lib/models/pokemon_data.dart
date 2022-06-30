@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pokedex/constants.dart';
@@ -8,7 +9,7 @@ import 'package:pokedex/utils.dart';
 
 import 'package:stack/stack.dart' as stack;
 
-class Pokemon {
+class Pokemon extends Equatable {
   late final int number;
   final String name;
   final PokemonType? firstType;
@@ -132,6 +133,9 @@ class Pokemon {
       secondType
     ]}>";
   }
+
+  @override
+  List<Object?> get props => [number];
 }
 
 enum PokemonType {

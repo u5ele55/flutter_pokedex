@@ -1,9 +1,13 @@
 part of 'description_bloc.dart';
 
-enum DescriptionStatus { initial, success, failure }
+enum DescriptionStatus {
+  initial,
+  success,
+  failure,
+}
 
 class DescriptionState extends Equatable {
-  DescriptionState({
+  const DescriptionState({
     this.status = DescriptionStatus.initial,
     this.pokemonData = const <PokemonOnlineData>[],
     this.currentPokemon,
@@ -26,7 +30,7 @@ class DescriptionState extends Equatable {
 
   @override
   String toString() {
-    return '''DescriptionState { status: $status, pokemonData: $pokemonData''';
+    return '''DescriptionState { status: $status, pokemonData: $pokemonData, currentPokemon: $currentPokemon''';
   }
 
   @override

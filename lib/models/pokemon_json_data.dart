@@ -57,6 +57,11 @@ class PokemonOnlineData {
     sprite = json['sprite'];
     description = json['description'];
   }
+
+  @override
+  String toString() {
+    return "<POD | $number - $name>";
+  }
 }
 
 class Abilities {

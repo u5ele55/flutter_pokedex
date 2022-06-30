@@ -1,9 +1,10 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class UserPokemon {
+class UserPokemon extends Equatable {
   final int id;
   int catched;
   bool isFavorite;
@@ -31,6 +32,9 @@ class UserPokemon {
   String toString() {
     return 'UserPokemon{id: $id, catched: $catched, isFavorite: $isFavorite}';
   }
+
+  @override
+  List get props => [id, catched, isFavorite];
 }
 
 class UserPokemonsSQLite {

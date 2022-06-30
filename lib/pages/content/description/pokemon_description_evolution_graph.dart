@@ -75,7 +75,6 @@ class PokemonEvolutionGraph extends StatelessWidget {
           child: PokemonListTile(
             pokemon: nextPokemon,
             displayName: false,
-            startOpacity: id != pokemon.number ? 0.7 : 1,
             preferPNG: true,
           ),
         ),

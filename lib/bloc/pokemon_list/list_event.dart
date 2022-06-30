@@ -16,3 +16,5 @@ class UserPokemonDataChanged extends ListEvent {
   final int id;
   UserPokemonDataChanged(this.id);
 }
+
+class ListRefresh extends ListEvent {}

@@ -39,6 +39,11 @@ class ListState extends Equatable {
   }
 
   @override
-  List<Object> get props =>
-      [status, searchConfig, pokemons, hasReachedMax, lastIndex];
+  List get props => [
+        status,
+        pokemons,
+        searchConfig,
+        hasReachedMax,
+        lastIndex,
+      ];
 }

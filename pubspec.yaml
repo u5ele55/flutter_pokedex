@@ -23,6 +23,7 @@ dependencies:
   sqflite: ^2.0.2+1
   expandable: ^5.0.1
   flutter_bloc: ^8.0.1
+  bloc_concurrency: ^0.2.0
   equatable: ^2.0.3
   stream_transform: ^2.0.0
   http: ^0.13.4
@@ -53,6 +54,7 @@ flutter:
     - assets/
     - assets/normal/
     - assets/svg/
+    - assets/types/
   
   fonts:
     - family: Pokemon Solid

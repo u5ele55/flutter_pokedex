@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pokedex/bloc/pokemon_list/list_bloc.dart';
-import 'package:pokedex/widgets/circle_loading.dart';
-import 'package:pokedex/widgets/pokemon_list_tile.dart';
 import 'package:pokedex/widgets/single_child_sliver.dart';
 
 import 'list_search/pokemon_list_search_block.dart';
+import 'list_view/pokemon_list_grid.dart';
 
 class PokemonListView extends StatefulWidget {
   const PokemonListView({Key? key}) : super(key: key);
@@ -34,52 +33,30 @@ class _PokemonListViewState extends State<PokemonListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ListBloc, ListState>(
-      builder: (context, state) {
-        if (state.status == ListStatus.initial) {
-          return const CircleLoading();
-        } else if (state.status == ListStatus.success) {
-          return CustomScrollView(
-            controller: _scrollController,
-            slivers: [
-              // SafeArea
-              SimpleSliver(
-                child: SizedBox(
-                  height: MediaQuery.of(context).padding.top + 8,
-                ),
-              ),
-              const PokemonListSearchBlock(),
-              SliverGrid(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    if (index >= state.pokemons.length) {
-                      return const CircleLoading();
-                    }
-                    var pokemonData = state.pokemons[index].pokemonData;
-                    var userData = state.pokemons[index].userData;
-                    return PokemonListTile(
-                      pokemon: pokemonData,
-                      userPokemon: userData,
-                      preferPNG: true,
-                    );
-                  },
-                  childCount: state.hasReachedMax
-                      ? state.pokemons.length
-                      : state.pokemons.length + state.pokemons.length % 2 + 2,
-                ),
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 3 / 2,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                ),
-              ),
-            ],
-          );
-        } else {
-          return const Text("no");
-        }
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<ListBloc>().add(ListRefresh());
       },
+      child: Scrollbar(
+        thickness: 16,
+        hoverThickness: 24,
+        radius: const Radius.circular(4),
+        controller: _scrollController,
+        interactive: true,
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            // SafeArea
+            SimpleSliver(
+              child: SizedBox(
+                height: MediaQuery.of(context).padding.top + 8,
+              ),
+            ),
+            const PokemonListSearchBlock(),
+            const PokemonListGrid(),
+          ],
+        ),
+      ),
     );
   }
 

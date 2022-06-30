@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/models/user_pokemons_sqlite.dart';
-import 'package:pokedex/pages/content/description/pokemon_description_panel_body.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'description/pokemon_description_block.dart';
+import 'description/pokemon_description_panel_body.dart';
 
 class PokemonDescriptionView extends StatelessWidget {
   const PokemonDescriptionView(

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:pokedex/constants.dart' as constants;
 import 'package:pokedex/models/pokemon_json_data.dart';
 import 'package:pokedex/services/api_pokedex_service.dart';
@@ -9,19 +10,21 @@ import 'pokemon_data.dart';
 import 'user_pokemons_sqlite.dart';
 import 'search_config.dart';
 
-class PokemonFullData {
+class PokemonFullData extends Equatable {
   final Pokemon pokemonData;
-  UserPokemon? userData;
+  final UserPokemon? userData;
 
-  PokemonFullData({required this.pokemonData, this.userData});
+  const PokemonFullData({required this.pokemonData, this.userData});
   @override
   String toString() {
-    return "<PFD : ${pokemonData.number}>";
+    return "<PFD : ${pokemonData.number} | $userData>";
   }
+
+  @override
+  List get props => [pokemonData, userData];
 }
 
 class PokemonDataHandler {
-  // {"Pokemon": Pokemon(...), "UserPokemon": UserPokemon(...)}
   static List<PokemonFullData>? _savedPokemonData;
 
   Future<List<PokemonFullData>> get pokemonData async {
@@ -35,16 +38,23 @@ class PokemonDataHandler {
             .add(PokemonFullData(pokemonData: Pokemon.fromList(csv[index])));
       }
       for (UserPokemon up in sql) {
-        _savedPokemonData![up.id - 1].userData = up;
+        _savedPokemonData![up.id - 1] = PokemonFullData(
+          pokemonData: _savedPokemonData![up.id - 1].pokemonData,
+          userData: up,
+        );
       }
     }
     return _savedPokemonData!;
   }
 
   void changeUserData(UserPokemon data, {bool? isFavorite, int? catched}) {
-    _savedPokemonData![data.id - 1].userData = data.copyWith(
+    final userData = data.copyWith(
       isFavorite: isFavorite,
       catched: catched,
+    );
+    _savedPokemonData![data.id - 1] = PokemonFullData(
+      pokemonData: _savedPokemonData![data.id - 1].pokemonData,
+      userData: userData,
     );
     UserPokemonsSQLite().insert(data);
   }
