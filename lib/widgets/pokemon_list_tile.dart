@@ -47,7 +47,10 @@ class PokemonListTile extends StatelessWidget {
                     ? const EdgeInsets.all(0)
                     : const EdgeInsets.all(12),
                 child: Center(
-                  child: pokemon.getImageWidget(preferPNG: preferPNG),
+                  child: Image.asset(
+                    pokemon.getImagePath(),
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
               foregroundPainter: getTypeColor(pokemon.secondType) == null

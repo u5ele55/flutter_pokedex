@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/bloc/pokemon_description/description_bloc.dart';
 import 'package:pokedex/models/pokemon_json_data.dart';
+import 'package:pokedex/pages/content/description/online_data/data_widgets/online_pokemon_card.dart';
 
 class PokemonForms extends StatelessWidget {
   const PokemonForms({Key? key}) : super(key: key);
@@ -14,21 +15,12 @@ class PokemonForms extends StatelessWidget {
             state.pokemonData.length == 1) {
           return const SizedBox.shrink();
         }
-        return SizedBox(
-          height: 100,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
             children: [
-              // TODO : place blocks of pokemon's forms here, make bloc event to change currentPokemon
-              for (PokemonOnlineData po in state.pokemonData) ...[
-                Container(
-                  width: 80,
-                  height: 80,
-                  color: Colors.amber,
-                ),
-                SizedBox(width: 4)
-              ]
+              for (PokemonOnlineData pokemon in state.pokemonData)
+                OnlinePokemonCard(pokemon),
             ],
           ),
         );

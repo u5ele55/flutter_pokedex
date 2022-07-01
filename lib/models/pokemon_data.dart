@@ -60,34 +60,9 @@ class Pokemon extends Equatable {
           evolvesTo: data[14],
         );
 
-  String getImagePath({bool preferPNG = false}) {
+  String getImagePath() {
     //final maxSvgIndex = -1;
-    return "assets/" +
-        (number > maxSvgIndex || preferPNG
-            ? "normal/$number.png"
-            : "svg/$number.svg");
-  }
-
-  Widget getImageWidget(
-      {BoxFit? fit, double? height, double? width, bool preferPNG = false}) {
-    final assetName = getImagePath(preferPNG: preferPNG);
-
-    if (assetName.contains(".svg")) {
-      return SvgPicture.asset(
-        assetName,
-        fit: fit ?? BoxFit.contain,
-        height: height,
-        width: width,
-        placeholderBuilder: (context) => const Center(child: Text("Building")),
-      );
-    } else {
-      return Image.asset(
-        assetName,
-        fit: fit ?? BoxFit.contain,
-        height: height,
-        width: width,
-      );
-    }
+    return "assets/normal/$number.png";
   }
 
   Graph getEvolutionChart() {
@@ -128,10 +103,7 @@ class Pokemon extends Equatable {
 
   @override
   String toString() {
-    return "<Pokemon | id: $number | name: $name | types: ${[
-      firstType,
-      secondType
-    ]}>";
+    return "<Pokemon | id: $number | name: $name>";
   }
 
   @override

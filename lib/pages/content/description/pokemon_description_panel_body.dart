@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:pokedex/bloc/pokemon_description/description_bloc.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/utils.dart';
+import 'package:pokedex/widgets/circle_loading.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
 
 class PokemonDescriptionPanelBody extends StatelessWidget {
@@ -37,7 +41,24 @@ class PokemonDescriptionPanelBody extends StatelessWidget {
           ),
           child: Flex(direction: Axis.vertical, children: [
             Expanded(child: Container(), flex: 1),
-            Expanded(child: pokemon.getImageWidget(), flex: 3),
+            Expanded(
+              flex: 3,
+              child: BlocBuilder<DescriptionBloc, DescriptionState>(
+                builder: (context, state) {
+                  if (state.status == DescriptionStatus.success &&
+                      state.currentPokemon!.sprite != null) {
+                    return CachedNetworkImage(
+                      imageUrl: state.currentPokemon!.sprite!,
+                      placeholder: (context, url) =>
+                          const CircleLoading(size: 32),
+                      errorWidget: (context, url, err) =>
+                          const Icon(Icons.error),
+                    );
+                  }
+                  return Image.asset(pokemon.getImagePath());
+                },
+              ),
+            ),
             Expanded(
               flex: 1,
               child: Row(

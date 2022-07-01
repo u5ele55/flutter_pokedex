@@ -9,6 +9,7 @@ part 'description_state.dart';
 class DescriptionBloc extends Bloc<DescriptionEvent, DescriptionState> {
   DescriptionBloc() : super(DescriptionState()) {
     on<LoadDescriptionOnlineData>(_onLoadOnlineData);
+    on<ChangeCurrentPokemon>(_onChangeCurrentPokemon);
   }
 
   Future<void> _onLoadOnlineData(
@@ -25,6 +26,16 @@ class DescriptionBloc extends Bloc<DescriptionEvent, DescriptionState> {
         status: DescriptionStatus.success,
         pokemonData: pokemonData,
         currentPokemon: pokemonData[0],
+      ),
+    );
+  }
+
+  Future<void> _onChangeCurrentPokemon(
+      ChangeCurrentPokemon event, Emitter<DescriptionState> emit) async {
+    return emit(
+      state.copyWith(
+        status: DescriptionStatus.success,
+        currentPokemon: event.pokemon,
       ),
     );
   }
