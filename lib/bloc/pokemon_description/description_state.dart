@@ -34,5 +34,6 @@ class DescriptionState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, pokemonData];
+  List<Object> get props =>
+      [status, pokemonData, currentPokemon ?? PokemonOnlineData()];
 }

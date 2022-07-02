@@ -20,7 +20,10 @@ class PokemonForms extends StatelessWidget {
           child: Row(
             children: [
               for (PokemonOnlineData pokemon in state.pokemonData)
-                OnlinePokemonCard(pokemon),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: OnlinePokemonCard(pokemon),
+                ),
             ],
           ),
         );

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pokedex/bloc/pokemon_description/description_bloc.dart';
 import 'package:pokedex/models/pokemon_data.dart';
-import 'package:pokedex/utils.dart';
-import 'package:pokedex/widgets/circle_loading.dart';
-import 'package:pokedex/widgets/stroke_text.dart';
+import 'package:pokedex/models/pokemon_json_data.dart';
+
+import 'pokemon_description_panel_body_view.dart';
 
 class PokemonDescriptionPanelBody extends StatelessWidget {
   const PokemonDescriptionPanelBody(this.pokemon,
@@ -22,84 +21,40 @@ class PokemonDescriptionPanelBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
+    List<Color> initialGradient = [
+      getTypeColor(pokemon.firstType) ?? Colors.white,
+      Colors.white,
+      getTypeColor(pokemon.secondType) ?? Colors.white,
+    ];
     return Column(
       children: [
-        Container(
-          height:
-              sliderRadius + screenSize.height * (1 - minPanelHeightPercentage),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              end: Alignment.bottomLeft,
-              begin: Alignment.topRight,
-              colors: [
-                getTypeColor(pokemon.firstType) ?? Colors.white,
-                Colors.white,
-                getTypeColor(pokemon.secondType) ?? Colors.white,
-              ],
-            ),
-          ),
-          child: Flex(direction: Axis.vertical, children: [
-            Expanded(child: Container(), flex: 1),
-            Expanded(
-              flex: 3,
-              child: BlocBuilder<DescriptionBloc, DescriptionState>(
-                builder: (context, state) {
-                  if (state.status == DescriptionStatus.success &&
-                      state.currentPokemon!.sprite != null) {
-                    return CachedNetworkImage(
-                      imageUrl: state.currentPokemon!.sprite!,
-                      placeholder: (context, url) =>
-                          const CircleLoading(size: 32),
-                      errorWidget: (context, url, err) =>
-                          const Icon(Icons.error),
-                    );
-                  }
-                  return Image.asset(pokemon.getImagePath());
-                },
+        BlocBuilder<DescriptionBloc, DescriptionState>(
+            builder: (context, state) {
+          List<PokemonType?> types =
+              (state.currentPokemon?.types ?? <String?>[null, null])
+                  .map((type) => typeFromString(type ?? ""))
+                  .toList();
+          types.add(null);
+          return Container(
+            height: sliderRadius +
+                screenSize.height * (1 - minPanelHeightPercentage),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                end: Alignment.bottomLeft,
+                begin: Alignment.topRight,
+                colors: state.status == DescriptionStatus.initial
+                    ? initialGradient
+                    : [
+                        getTypeColor(types[0]) ?? Colors.white,
+                        Colors.white,
+                        getTypeColor(types[1]) ?? Colors.white,
+                      ],
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: 128,
-                    padding: const EdgeInsets.only(left: 12),
-                    child: StrokeText(
-                      toRomanNumber(pokemon.generation),
-                      strokeWidth: 6,
-                      strokeColor: Colors.grey[600]!,
-                      style: const TextStyle(
-                        fontSize: 48,
-                        letterSpacing: 6,
-                        color: Colors.white,
-                        fontFamily: "Pokemon Solid",
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(right: 12),
-                    height: 128,
-                    child: StrokeText(
-                      "#${pokemon.number}",
-                      strokeColor: Colors.white,
-                      strokeWidth: 6,
-                      style: TextStyle(
-                        color: (getTypeColor(pokemon.firstType) ?? Colors.grey)
-                            .withAlpha(128),
-                        fontSize: 48,
-                        letterSpacing: 6,
-                        fontFamily: "Pokemon Solid",
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ]),
-        ),
+            child: DescriptionPanelBodyView(pokemon),
+          );
+        }),
       ],
     );
   }

@@ -1,4 +1,6 @@
-class PokemonOnlineData {
+import 'package:equatable/equatable.dart';
+
+class PokemonOnlineData extends Equatable {
   String? number;
   String? name;
   String? species;
@@ -62,6 +64,11 @@ class PokemonOnlineData {
   String toString() {
     return "<POD | $number - $name>";
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props =>
+      [number, name, starter, legendary, mythical, ultraBeast, mega];
 }
 
 class Abilities {

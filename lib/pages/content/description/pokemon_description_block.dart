@@ -8,6 +8,7 @@ import 'package:pokedex/pages/content/description/pokemon_description_stats.dart
 import 'package:pokedex/widgets/stroke_text.dart';
 
 import 'online_data/online_data.dart';
+import 'pokemon_name_headline.dart';
 
 class PokemonDescriptionBlock extends StatelessWidget {
   const PokemonDescriptionBlock(this.pokemon, {Key? key, this.scrollController})
@@ -23,28 +24,11 @@ class PokemonDescriptionBlock extends StatelessWidget {
       //shrinkWrap: true,
       children: [
         //SizedBox(height: MediaQuery.of(context).padding.top),
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: StrokeText(
-              pokemon.name,
-              style: Theme.of(context).textTheme.headline1?.merge(
-                    const TextStyle(
-                      shadows: [Shadow(color: Colors.white, blurRadius: 4)],
-                      fontSize: 32,
-                      fontFamily: "Pokemon Solid",
-                    ),
-                  ),
-              strokeColor: constants.bluePokemonColor,
-              strokeWidth: 4,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: Column(
             children: [
+              PokemonNameHeadline(pokemon),
               const OnlinePokemonDescription(),
               const SizedBox(height: 4),
               const Headline("Stats"),
