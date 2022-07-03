@@ -56,7 +56,9 @@ class PokemonOnlineData extends Equatable {
     ultraBeast = json['ultraBeast'];
     mega = json['mega'];
     gen = json['gen'];
-    sprite = json['sprite'];
+    sprite = json['sprite'].contains("131-mega")
+        ? json['sprite'].replaceFirst("131-mega", "130-mega")
+        : json['sprite'];
     description = json['description'];
   }
 

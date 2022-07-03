@@ -28,8 +28,10 @@ class PokemonDescriptionBlock extends StatelessWidget {
           child: Column(
             children: [
               PokemonNameHeadline(pokemon),
-              const OnlinePokemonDescription(),
+              OnlinePokemonDescription(pokemon.number),
               const SizedBox(height: 4),
+              PokemonTypesBlock(pokemon),
+              const SizedBox(height: 16),
               const Headline("Stats"),
               PokemonStatsBlock(pokemon),
               const SizedBox(height: 16),

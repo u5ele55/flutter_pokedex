@@ -17,11 +17,12 @@ class PokemonForms extends StatelessWidget {
         }
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.all(12),
           child: Row(
             children: [
               for (PokemonOnlineData pokemon in state.pokemonData)
                 Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: const EdgeInsets.only(right: 12.0),
                   child: OnlinePokemonCard(pokemon),
                 ),
             ],

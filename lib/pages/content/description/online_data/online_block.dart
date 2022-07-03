@@ -30,7 +30,7 @@ class OnlinePokemonInformationBlock extends StatelessWidget {
                 PokemonBoolInfo(currentPokemon),
                 const SizedBox(height: 8),
                 PokemonAbilities(currentPokemon),
-                const SizedBox(height: 8),
+                const SizedBox(height: 24),
                 const PokemonForms(),
                 const SizedBox(height: 8),
               ],

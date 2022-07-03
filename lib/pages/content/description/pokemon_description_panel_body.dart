@@ -24,10 +24,7 @@ class PokemonDescriptionPanelBody extends StatelessWidget {
       children: [
         BlocBuilder<DescriptionBloc, DescriptionState>(
             builder: (context, state) {
-          List<PokemonType?> types =
-              (state.currentPokemon?.types ?? <String?>[null, null])
-                  .map((type) => typeFromString(type ?? ""))
-                  .toList();
+          List<PokemonType?> types;
           List<Color> gradient;
           if (state.currentPokemon?.types != null) {
             types = state.currentPokemon!.types!

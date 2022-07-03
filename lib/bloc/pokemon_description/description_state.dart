@@ -3,7 +3,8 @@ part of 'description_bloc.dart';
 enum DescriptionStatus {
   initial,
   success,
-  failure,
+  failure_404,
+  failure_other,
 }
 
 class DescriptionState extends Equatable {

@@ -130,10 +130,14 @@ enum PokemonType {
   water
 }
 
+String typeToString(PokemonType type) {
+  return type.toString().split('.')[1];
+}
+
 PokemonType? typeFromString(String type) {
   type = type.toLowerCase();
   for (PokemonType ptype in PokemonType.values) {
-    if (ptype.toString().split('.').contains(type)) {
+    if (typeToString(ptype) == type) {
       return ptype;
     }
   }

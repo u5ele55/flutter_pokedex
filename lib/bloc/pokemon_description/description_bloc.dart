@@ -14,11 +14,19 @@ class DescriptionBloc extends Bloc<DescriptionEvent, DescriptionState> {
 
   Future<void> _onLoadOnlineData(
       LoadDescriptionOnlineData event, Emitter<DescriptionState> emit) async {
+    emit(state.copyWith(
+      status: DescriptionStatus.initial,
+    ));
     final pokemonData = await PokemonDataHandler().getOnlinePokemon(event.id);
 
     if (pokemonData == null) {
       return emit(state.copyWith(
-        status: DescriptionStatus.failure,
+        status: DescriptionStatus.failure_other,
+      ));
+    }
+    if (pokemonData.isEmpty) {
+      return emit(state.copyWith(
+        status: DescriptionStatus.failure_404,
       ));
     }
     return emit(

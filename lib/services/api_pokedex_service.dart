@@ -17,10 +17,12 @@ class ApiPokedexService {
             PokemonOnlineData.fromJson(item)
         ];
         return pData;
+      } else {
+        return [];
       }
     } catch (e) {
       print("Error at ApiPokedexService: " + e.toString());
+      return null;
     }
-    return null;
   }
 }
