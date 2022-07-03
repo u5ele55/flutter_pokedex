@@ -7,7 +7,7 @@ part 'description_event.dart';
 part 'description_state.dart';
 
 class DescriptionBloc extends Bloc<DescriptionEvent, DescriptionState> {
-  DescriptionBloc() : super(DescriptionState()) {
+  DescriptionBloc() : super(const DescriptionState()) {
     on<LoadDescriptionOnlineData>(_onLoadOnlineData);
     on<ChangeCurrentPokemon>(_onChangeCurrentPokemon);
   }

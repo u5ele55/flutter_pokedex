@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pokedex/constants.dart';
 import 'package:pokedex/models/csv_handler.dart';
 import 'package:pokedex/models/graph.dart';

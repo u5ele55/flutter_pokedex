@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:pokedex/models/pokemon_json_data.dart';
 
 class PokemonBoolInfo extends StatelessWidget {

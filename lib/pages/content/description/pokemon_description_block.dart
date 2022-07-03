@@ -5,7 +5,6 @@ import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/pages/content/description/pokemon_description_evolution_graph.dart';
 import 'package:pokedex/pages/content/description/pokemon_description_headline.dart';
 import 'package:pokedex/pages/content/description/pokemon_description_stats.dart';
-import 'package:pokedex/widgets/stroke_text.dart';
 
 import 'online_data/online_data.dart';
 import 'pokemon_name_headline.dart';

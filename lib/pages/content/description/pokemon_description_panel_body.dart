@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/bloc/pokemon_description/description_bloc.dart';
 import 'package:pokedex/models/pokemon_data.dart';
-import 'package:pokedex/models/pokemon_json_data.dart';
 
 import 'pokemon_description_panel_body_view.dart';
 
@@ -21,11 +20,6 @@ class PokemonDescriptionPanelBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    List<Color> initialGradient = [
-      getTypeColor(pokemon.firstType) ?? Colors.white,
-      Colors.white,
-      getTypeColor(pokemon.secondType) ?? Colors.white,
-    ];
     return Column(
       children: [
         BlocBuilder<DescriptionBloc, DescriptionState>(
@@ -34,7 +28,25 @@ class PokemonDescriptionPanelBody extends StatelessWidget {
               (state.currentPokemon?.types ?? <String?>[null, null])
                   .map((type) => typeFromString(type ?? ""))
                   .toList();
-          types.add(null);
+          List<Color> gradient;
+          if (state.currentPokemon?.types != null) {
+            types = state.currentPokemon!.types!
+                .map((type) => typeFromString(type))
+                .toList();
+            types.add(null);
+            gradient = [
+              getTypeColor(types[0]) ?? Colors.white,
+              Colors.white,
+              getTypeColor(types[1]) ?? Colors.white
+            ];
+          } else {
+            gradient = [
+              getTypeColor(pokemon.firstType) ?? Colors.white,
+              Colors.white,
+              getTypeColor(pokemon.secondType) ?? Colors.white,
+            ];
+          }
+
           return Container(
             height: sliderRadius +
                 screenSize.height * (1 - minPanelHeightPercentage),
@@ -43,13 +55,7 @@ class PokemonDescriptionPanelBody extends StatelessWidget {
               gradient: LinearGradient(
                 end: Alignment.bottomLeft,
                 begin: Alignment.topRight,
-                colors: state.status == DescriptionStatus.initial
-                    ? initialGradient
-                    : [
-                        getTypeColor(types[0]) ?? Colors.white,
-                        Colors.white,
-                        getTypeColor(types[1]) ?? Colors.white,
-                      ],
+                colors: gradient,
               ),
             ),
             child: DescriptionPanelBodyView(pokemon),
