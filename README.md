@@ -20,19 +20,22 @@ Some plans on this app:
   <img src="https://user-images.githubusercontent.com/99137907/174592012-cfd557f0-64a2-4865-8a09-1562e49be47d.png" width="40%"> 
   <img src="https://user-images.githubusercontent.com/99137907/174592037-17cf56f9-98be-4597-bf12-331607c984c7.png" width="40%"> 
   <img src="https://user-images.githubusercontent.com/99137907/174592052-9e395658-ff15-45fd-ac00-e94df69986ae.png" width="40%"> 
-  <img src="https://user-images.githubusercontent.com/99137907/174592071-86a661e2-a6bd-4de4-bf9a-dd58157a933a.png" width="40%"> 
+  <img src="https://user-images.githubusercontent.com/99137907/177212487-b13d48b1-9fe4-4495-83a2-3571abfaf600.png" width="40%"> 
   <hr>
+  
   <h3>Pokemon description page</h3>
-  <img src="https://user-images.githubusercontent.com/99137907/174592092-84c98bad-96b8-4df8-9ff8-1b0e44b69eca.png" width="40%"> 
-  <img src="https://user-images.githubusercontent.com/99137907/174592105-965e12b4-9f69-4f75-a0e9-1e5123ffe366.png" width="40%"> 
-  <img src="https://user-images.githubusercontent.com/99137907/174592153-21de313d-7c77-428c-893c-dc66f8539ac8.png" width="40%"> 
-  <img src="https://user-images.githubusercontent.com/99137907/174592171-198f99a9-6277-4c77-9902-16e0f1716659.png" width="40%"> 
-  <img src="https://user-images.githubusercontent.com/99137907/174592185-ce36f4c9-6aed-4c46-9e58-0fab08665c1d.png" width="40%"> 
+  <img src="https://user-images.githubusercontent.com/99137907/177212676-5046cf0e-1c1e-41a1-9cda-fd2205d3993e.png" width="40%"> 
+  <img src="https://user-images.githubusercontent.com/99137907/177212687-61971f9a-78b6-4eeb-8934-8aef1c3e4733.png" width="40%"> 
+  <img src="https://user-images.githubusercontent.com/99137907/177212704-e8c02c49-7d87-4e72-8177-bf4be6b93827.png" width="40%"> 
+  <img src="https://user-images.githubusercontent.com/99137907/177212727-4e3b7af5-2771-4662-836f-64718566f675.png" width="40%"> 
   <hr>
+  
   <h3>Filters & Search</h3>
-  <img src="https://user-images.githubusercontent.com/99137907/174592115-0987bc9b-7e7e-49eb-aeab-c026b410a9ea.png" width="40%"> 
-  <img src="https://user-images.githubusercontent.com/99137907/174592139-7cc5ee9d-593c-46b1-bee1-a43a3bcbba76.png" width="40%"> 
-  <img src="https://user-images.githubusercontent.com/99137907/174592208-f1eaf021-d676-474f-967f-cdff054113bb.png" width="40%"> 
-  <img src="https://user-images.githubusercontent.com/99137907/174592217-dd2804c3-6358-4918-b0e7-53ecfe5cfd80.png" width="40%"> 
+  <img src="https://user-images.githubusercontent.com/99137907/177212849-7cf7f9e6-916e-40c1-95f9-c6d09c90acf9.png" width="40%"> 
+  <img src="https://user-images.githubusercontent.com/99137907/177212862-893ab938-50d0-4ab7-ae97-dfd6cae01e4e.png" width="40%"> 
+  <img src="https://user-images.githubusercontent.com/99137907/177212881-fddc5c4d-6647-4624-ba76-77d6a4b580e6.png" width="40%"> 
+  <img src="https://user-images.githubusercontent.com/99137907/177212895-3840614f-13f6-470b-86a6-cabecd08276f.png" width="40%"> 
+  <img src="https://user-images.githubusercontent.com/99137907/177212910-ca716749-343a-492b-9de1-ed4d27cac995.png" width="40%"> 
+
 
 </div>
