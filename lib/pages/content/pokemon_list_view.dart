@@ -43,18 +43,21 @@ class _PokemonListViewState extends State<PokemonListView> {
         radius: const Radius.circular(4),
         controller: _scrollController,
         interactive: true,
-        child: CustomScrollView(
-          controller: _scrollController,
-          slivers: [
-            // SafeArea
-            SimpleSliver(
-              child: SizedBox(
-                height: MediaQuery.of(context).padding.top + 8,
+        child: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              // SafeArea
+              SimpleSliver(
+                child: SizedBox(
+                  height: MediaQuery.of(context).padding.top,
+                ),
               ),
-            ),
-            const PokemonListSearchBlock(),
-            const PokemonListGrid(),
-          ],
+              const PokemonListSearchBlock(),
+              const PokemonListGrid(),
+            ],
+          ),
         ),
       ),
     );

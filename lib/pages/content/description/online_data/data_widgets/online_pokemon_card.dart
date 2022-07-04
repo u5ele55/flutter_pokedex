@@ -10,46 +10,45 @@ class OnlinePokemonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () =>
-          context.read<DescriptionBloc>().add(ChangeCurrentPokemon(pokemon)),
-      child: BlocBuilder<DescriptionBloc, DescriptionState>(
-        builder: (context, state) => Container(
-          width: 120,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.grey[300],
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 8,
-                color: state.currentPokemon == pokemon
-                    ? Colors.black
-                    : Colors.grey,
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.white,
-                ),
-                padding: const EdgeInsets.all(4),
-                child: CachedNetworkImage(
-                    imageUrl: pokemon.sprite!, fit: BoxFit.fitWidth),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(
-                  pokemon.name!,
-                  style: const TextStyle(
-                    fontSize: 30,
+    var borderRadius = BorderRadius.circular(15);
+    return BlocBuilder<DescriptionBloc, DescriptionState>(
+      builder: (context, state) => SizedBox(
+        width: 120,
+        child: Material(
+          color: Colors.grey[300],
+          borderRadius: borderRadius,
+          shadowColor: Colors.grey,
+          elevation: state.currentPokemon == pokemon ? 4 : 12,
+          child: InkWell(
+            borderRadius: borderRadius,
+            onTap: () => context
+                .read<DescriptionBloc>()
+                .add(ChangeCurrentPokemon(pokemon)),
+            child: Column(
+              children: [
+                Ink(
+                  decoration: BoxDecoration(
+                    borderRadius: borderRadius,
+                    color: Colors.white,
                   ),
-                  textAlign: TextAlign.center,
+                  padding: const EdgeInsets.all(4),
+                  child: CachedNetworkImage(
+                    imageUrl: pokemon.sprite!,
+                    fit: BoxFit.fitWidth,
+                  ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    pokemon.name!,
+                    style: const TextStyle(
+                      fontSize: 30,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

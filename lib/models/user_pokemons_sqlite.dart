@@ -6,11 +6,12 @@ import 'package:sqflite/sqflite.dart';
 
 class UserPokemon extends Equatable {
   final int id;
-  int catched;
-  bool isFavorite;
+  final int catched;
+  final bool isFavorite;
 
-  UserPokemon(this.id, this.catched, this.isFavorite);
-  UserPokemon.fromSQL(this.id, this.catched, int isF) : isFavorite = isF == 0;
+  const UserPokemon(this.id, this.catched, this.isFavorite);
+  const UserPokemon.fromSQL(this.id, this.catched, int isF)
+      : isFavorite = isF == 0;
 
   UserPokemon copyWith({int? id, int? catched, bool? isFavorite}) {
     return UserPokemon(

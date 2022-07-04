@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:pokedex/constants.dart' as constants;
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/pages/content/description/pokemon_description_evolution_graph.dart';
 import 'package:pokedex/pages/content/description/pokemon_description_headline.dart';

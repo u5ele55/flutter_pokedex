@@ -40,16 +40,14 @@ class DescriptionPanelBodyView extends StatelessWidget {
               Container(
                 height: 128,
                 padding: const EdgeInsets.only(left: 12),
-                child: StrokeText(
-                  toRomanNumber(pokemon.generation),
-                  strokeWidth: 6,
-                  strokeColor: Colors.grey[600]!,
-                  style: const TextStyle(
-                    fontSize: 48,
-                    letterSpacing: 6,
-                    color: Colors.white,
-                    fontFamily: "Pokemon Solid",
-                  ),
+                child: BlocBuilder<DescriptionBloc, DescriptionState>(
+                  builder: (context, state) {
+                    if (state.status == DescriptionStatus.success &&
+                        state.currentPokemon!.gen != null) {
+                      return _genText(state.currentPokemon!.gen!);
+                    }
+                    return _genText(pokemon.generation);
+                  },
                 ),
               ),
               Container(
@@ -74,4 +72,16 @@ class DescriptionPanelBodyView extends StatelessWidget {
       ],
     );
   }
+
+  Widget _genText(int gen) => StrokeText(
+        toRomanNumber(gen),
+        strokeWidth: 6,
+        strokeColor: Colors.grey[600]!,
+        style: const TextStyle(
+          fontSize: 48,
+          letterSpacing: 6,
+          color: Colors.white,
+          fontFamily: "Pokemon Solid",
+        ),
+      );
 }

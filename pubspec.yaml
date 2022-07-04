@@ -18,7 +18,6 @@ dependencies:
   csv: ^5.0.0
   stack: ^0.2.1 
   graphview: ^1.1.1
-  flutter_svg: ^1.0.3
   path: ^1.8.0
   sqflite: ^2.0.2+1
   expandable: ^5.0.1

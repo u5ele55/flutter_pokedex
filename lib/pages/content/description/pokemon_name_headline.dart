@@ -13,9 +13,9 @@ class PokemonNameHeadline extends StatelessWidget {
     return Center(
       child: BlocBuilder<DescriptionBloc, DescriptionState>(
           builder: (context, state) {
-        final name;
+        final String name;
         if (state.status == DescriptionStatus.success) {
-          name = state.currentPokemon!.name;
+          name = state.currentPokemon!.name!;
         } else {
           name = pokemon.name;
         }
