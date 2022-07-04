@@ -3,11 +3,11 @@
 Flutter pokedex app. Currently in development... <br>
 Some plans on this app:
 - [x] List of pokemons
-- [ ] Description page
+- [x] Description page
 - - [x] Pokemon stats
 - - [x] Evolution graph
 - - [x] "Add to favorite" button
-- - [ ] Get data of an pokemon from Pokedex API and display it
+- - [x] Get data of an pokemon from Pokedex API and display it
 - [ ] Pokemon catch page (Maybe something like case opening?)
 - - [ ] Different pokeballs with different pokemons catch rates
 - - [ ] Implementation of pokemon evolution after catching some amount of pokemons
