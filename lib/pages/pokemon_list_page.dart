@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:pokedex/bloc/pokemon_list/list_bloc.dart';
 import 'package:pokedex/constants.dart' as constants;
-import 'package:pokedex/pages/content/pokemon_list_view.dart';
-import 'package:pokedex/widgets/page_loading_animation.dart';
+import 'content/navigation/navigation_menu.dart';
+import 'content/pokemon_list_view.dart';
+import 'content/list_view/page_loading_animation.dart';
 
 class PokemonListPage extends StatelessWidget {
   const PokemonListPage({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class PokemonListPage extends StatelessWidget {
             create: (_) => ListBloc()..add(ListTilesLoaded()),
             child: const PokemonListView(),
           ),
+          const Positioned(bottom: 32, right: 32, child: PokeballPageMenu()),
           const PokeballPageLoadingAnimation(
               duration: constants.loadingDuration),
         ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/animations/widget_size_expanding_animation.dart';
 import 'package:pokedex/animations/widget_slide_animation.dart';
 import 'package:pokedex/constants.dart' as constants;
-import 'package:pokedex/widgets/pokeball_inner_circle.dart';
+import 'package:pokedex/pages/content/list_view/pokeball_inner_circle.dart';
 
 /// Use only in Stack, this widget should be the last one in the Stack.
 class PokeballPageLoadingAnimation extends StatefulWidget {
@@ -75,6 +75,7 @@ class _PokeballPageLoadingAnimationState
                 gradient: RadialGradient(
                   colors: const [
                     constants.pokeballTopColor,
+                    // taken from splash picture
                     Color.fromRGBO(70, 14, 20, 1),
                   ],
                   center: Alignment.bottomCenter,

@@ -44,7 +44,7 @@ class _PokemonListViewState extends State<PokemonListView> {
         controller: _scrollController,
         interactive: true,
         child: Padding(
-          padding: const EdgeInsets.all(6.0),
+          padding: const EdgeInsets.only(top: 8, right: 6, left: 6),
           child: CustomScrollView(
             controller: _scrollController,
             slivers: [
