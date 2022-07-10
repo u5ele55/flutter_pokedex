@@ -1,22 +1,23 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pokedex/animations/widget_size_expanding_animation.dart';
 import 'package:pokedex/animations/widget_slide_animation.dart';
-import 'package:pokedex/constants.dart' as constants;
+import 'package:pokedex/core/constants.dart' as constants;
 import 'package:pokedex/pages/content/list_view/pokeball_inner_circle.dart';
 
 /// Use only in Stack, this widget should be the last one in the Stack.
-class PokeballPageLoadingAnimation extends StatefulWidget {
-  const PokeballPageLoadingAnimation({Key? key, required this.duration})
+class PokeballPageLoadingAnimation extends StatelessWidget {
+  const PokeballPageLoadingAnimation(
+      {Key? key,
+      this.duration = constants.slideDuration,
+      this.delay = Duration.zero,
+      this.reverse = false})
       : super(key: key);
   final Duration duration;
+  final Duration delay;
+  final bool reverse;
 
-  @override
-  State<PokeballPageLoadingAnimation> createState() =>
-      _PokeballPageLoadingAnimationState();
-}
-
-class _PokeballPageLoadingAnimationState
-    extends State<PokeballPageLoadingAnimation> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -25,15 +26,16 @@ class _PokeballPageLoadingAnimationState
         ? screenHeight / (2 * screenWidth)
         : 2 * screenWidth / screenHeight;
 
-    double pokeballDiameter = screenWidth / 2;
+    double pokeballDiameter = min(screenWidth / 2, screenHeight / 2);
 
     return Stack(
       children: [
         SlideAnimation(
           destroyAfterCompletion: true,
           endOffset: const Offset(0.0, 1.0),
-          delay: widget.duration,
-          duration: constants.slideDuration,
+          delay: delay,
+          duration: duration,
+          reverse: reverse,
           child: Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -53,7 +55,9 @@ class _PokeballPageLoadingAnimationState
               child: Align(
                 alignment: Alignment.topCenter,
                 child: SizeExpandingAnimation(
-                  duration: widget.duration - constants.blinkDuration,
+                  duration: delay - constants.blinkDuration < Duration.zero
+                      ? Duration.zero
+                      : delay - constants.blinkDuration,
                   child: _pokeballBottomPart(pokeballDiameter),
                 ),
               ),
@@ -63,8 +67,9 @@ class _PokeballPageLoadingAnimationState
         SlideAnimation(
           destroyAfterCompletion: true,
           endOffset: const Offset(0.0, -1.0),
-          delay: widget.duration,
-          duration: constants.slideDuration,
+          delay: delay,
+          duration: duration,
+          reverse: reverse,
           child: Align(
             alignment: Alignment.topCenter,
             child: Container(
@@ -85,7 +90,9 @@ class _PokeballPageLoadingAnimationState
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: SizeExpandingAnimation(
-                  duration: widget.duration - constants.blinkDuration,
+                  duration: delay - constants.blinkDuration < Duration.zero
+                      ? Duration.zero
+                      : delay - constants.blinkDuration,
                   child: _pokeballTopPart(pokeballDiameter),
                 ),
               ),
@@ -118,7 +125,7 @@ class _PokeballPageLoadingAnimationState
             transform: Matrix4.translationValues(0, pokeballDiameter / 6, 0),
             height: pokeballDiameter / 3,
             child: PokeballInnerCircle(
-              delay: widget.duration - constants.blinkDuration,
+              delay: duration - constants.blinkDuration,
               duration: constants.blinkDuration,
             ),
             width: pokeballDiameter / 3,

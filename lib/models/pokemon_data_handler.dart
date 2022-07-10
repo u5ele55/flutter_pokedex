@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:pokedex/constants.dart' as constants;
+import 'package:pokedex/core/constants.dart' as constants;
 import 'package:pokedex/models/pokemon_json_data.dart';
 import 'package:pokedex/services/api_pokedex_service.dart';
 

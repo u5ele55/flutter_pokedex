@@ -5,7 +5,7 @@ import 'package:pokedex/models/pokemon_data_handler.dart';
 import 'package:pokedex/widgets/pokemon_list_tile.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
 
-import 'package:pokedex/constants.dart' as constants;
+import 'package:pokedex/core/constants.dart' as constants;
 import 'package:pokedex/models/graph.dart' as custom_graph;
 import 'package:stack/stack.dart' as stack;
 

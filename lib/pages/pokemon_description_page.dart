@@ -6,6 +6,7 @@ import 'package:pokedex/pages/content/pokemon_description_view.dart';
 
 import 'package:pokedex/models/user_pokemons_sqlite.dart';
 import 'package:pokedex/models/pokemon_data.dart';
+import 'package:pokedex/routes.dart';
 
 import 'content/description/pokemon_description_favorite_button.dart';
 
@@ -43,7 +44,7 @@ class PokemonDescriptionPage extends StatelessWidget {
               left: _fabOffset,
               child: FloatingActionButton.small(
                 child: const Icon(Icons.arrow_back, color: Colors.black),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => AppNavigator.pop(),
                 backgroundColor: Colors.white,
                 elevation: 6,
                 highlightElevation: 4,

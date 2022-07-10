@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/widgets/progress_bar_with_title.dart';
-import 'package:pokedex/constants.dart' as constants;
+import 'package:pokedex/core/constants.dart' as constants;
 
 class PokemonStatsBlock extends StatelessWidget {
   const PokemonStatsBlock(this.pokemon, {Key? key}) : super(key: key);

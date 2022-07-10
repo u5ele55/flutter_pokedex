@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/constants.dart';
-import 'package:pokedex/pages/pokemon_list_page.dart';
+import 'package:pokedex/core/constants.dart';
 
 import 'bloc/simple_bloc_observer.dart';
+import 'routes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +19,8 @@ class MyApp extends MaterialApp {
       : super(
           key: key,
           title: 'Pokedex',
+          navigatorKey: AppNavigator.navigatorKey,
+          onGenerateRoute: AppNavigator.onGenerateRoute,
           theme: ThemeData(
             primarySwatch: Colors.grey,
             fontFamily: "Merchant Copy",
@@ -30,6 +32,6 @@ class MyApp extends MaterialApp {
               ),
             ),
           ),
-          home: const PokemonListPage(),
+          //home: const PokemonListPage(),
         );
 }

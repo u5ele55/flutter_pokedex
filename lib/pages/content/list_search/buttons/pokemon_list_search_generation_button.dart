@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/bloc/pokemon_list/list_bloc.dart';
-import 'package:pokedex/utils.dart';
+import 'package:pokedex/core/utils.dart';
 
 class PokemonGenerationFilterButton extends StatelessWidget {
   const PokemonGenerationFilterButton(this.generation, {Key? key})

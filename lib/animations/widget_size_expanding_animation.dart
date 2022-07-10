@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class SizeExpandingAnimation extends StatefulWidget {
   const SizeExpandingAnimation({Key? key, required this.child, duration})
-      : duration = const Duration(milliseconds: 1000),
+      : duration = duration ?? const Duration(milliseconds: 1000),
         super(key: key);
 
   final Widget child;

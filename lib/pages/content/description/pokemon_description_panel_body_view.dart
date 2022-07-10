@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/bloc/pokemon_description/description_bloc.dart';
 import 'package:pokedex/models/pokemon_data.dart';
-import 'package:pokedex/utils.dart';
+import 'package:pokedex/core/utils.dart';
 import 'package:pokedex/widgets/circle_loading.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
 

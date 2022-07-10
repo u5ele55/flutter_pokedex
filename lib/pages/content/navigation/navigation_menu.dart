@@ -1,38 +1,39 @@
-import 'package:dropdown_button2/dropdown_button2.dart'; // TODO: delete from pubspec
 import 'package:flutter/material.dart';
-import 'package:pokedex/pages/pokemon_catch_page.dart';
+import 'package:pokedex/routes.dart';
+
+part 'menu_entry.dart';
 
 class PokeballPageMenu extends StatelessWidget {
   const PokeballPageMenu({Key? key}) : super(key: key);
 
+  static const Map<Routes, String> routes = {
+    Routes.list: "List",
+    Routes.shop: "Shop",
+  };
+
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<int>(
+    return PopupMenuButton<Routes>(
       child: Container(
         color: Colors.red,
         height: 80,
         width: 80,
       ),
-      onSelected: (int a) {
-        print(ModalRoute.of(context)?.settings.name);
-        if (a == 1) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => PokemonCatchPage()));
+      onSelected: (Routes route) {
+        if (route != AppNavigator.currentRoute) {
+          AppNavigator.push(route);
         }
       },
       itemBuilder: (context) {
         return [
-          PopupMenuItem(
-            child: Text("Aboba!!!!"),
-            value: 1,
-          ),
-          PopupMenuItem(
-            child: Text("Aboba"),
-            value: 2,
-          ),
+          for (Routes route in routes.keys) NavigationMenuEntry(route),
         ];
       },
       offset: Offset(0, -100),
     );
   }
+
+  PopupMenuItem<T> a<T>() => PopupMenuItem<T>(
+        child: Text('a'),
+      );
 }

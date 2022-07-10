@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/bloc/pokemon_list/list_bloc.dart';
 import 'package:pokedex/models/pokemon_data.dart';
-import 'package:pokedex/constants.dart' as constants;
+import 'package:pokedex/core/constants.dart' as constants;
 import 'package:pokedex/pages/content/list_search/buttons/pokemon_list_search_favorites_btn.dart';
 
 import 'buttons/pokemon_list_search_choose_all_btn.dart';

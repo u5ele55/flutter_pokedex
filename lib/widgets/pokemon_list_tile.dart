@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/bloc/pokemon_list/list_bloc.dart';
-import 'package:pokedex/constants.dart' as constants;
+import 'package:pokedex/core/constants.dart' as constants;
 import 'package:pokedex/decorators/pokemon_tile_ornament.dart';
 import 'package:pokedex/models/pokemon_data.dart';
+import 'package:pokedex/models/pokemon_data_handler.dart';
 import 'package:pokedex/models/user_pokemons_sqlite.dart';
-import 'package:pokedex/pages/pokemon_description_page.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
+
+import '../routes.dart';
 
 class PokemonListTile extends StatelessWidget {
   PokemonListTile({
@@ -126,13 +128,11 @@ class PokemonListTile extends StatelessWidget {
 
   void _onTap(BuildContext context) async {
     FocusScope.of(context).unfocus();
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PokemonDescriptionPage(
-          pokemon: pokemon,
-          userPokemon: userPokemon,
-        ),
+    final result = await AppNavigator.push(
+      Routes.description,
+      PokemonFullData(
+        pokemonData: pokemon,
+        userData: userPokemon,
       ),
     );
     if (entryOfList) {

@@ -6,13 +6,15 @@ class SlideAnimation extends StatefulWidget {
   final Duration delay;
   final Widget child;
   final bool destroyAfterCompletion;
+  final bool reverse;
   const SlideAnimation(
       {Key? key,
       required this.endOffset,
       required this.child,
       required this.duration,
       required this.delay,
-      this.destroyAfterCompletion = false})
+      this.destroyAfterCompletion = false,
+      this.reverse = false})
       : super(key: key);
 
   @override
@@ -31,8 +33,8 @@ class _SlideAnimationState extends State<SlideAnimation>
       ));
 
   late final Animation<Offset> _offsetAnimation = Tween<Offset>(
-    begin: Offset.zero,
-    end: widget.endOffset,
+    begin: !widget.reverse ? Offset.zero : widget.endOffset,
+    end: !widget.reverse ? widget.endOffset : Offset.zero,
   ).animate(CurvedAnimation(
     parent: _controller,
     curve: Interval(
@@ -41,6 +43,12 @@ class _SlideAnimationState extends State<SlideAnimation>
       1.0,
     ),
   ));
+
+  @override
+  void initState() {
+    super.initState();
+    print("sl");
+  }
 
   @override
   void dispose() {

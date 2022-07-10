@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:pokedex/constants.dart';
+import 'package:pokedex/core/constants.dart';
 import 'package:pokedex/models/csv_handler.dart';
 import 'package:pokedex/models/graph.dart';
 import 'package:pokedex/models/pokemon_data_handler.dart';
-import 'package:pokedex/utils.dart';
+import 'package:pokedex/core/utils.dart';
 
 import 'package:stack/stack.dart' as stack;
 

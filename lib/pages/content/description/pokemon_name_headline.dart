@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/bloc/pokemon_description/description_bloc.dart';
 import 'package:pokedex/models/pokemon_data.dart';
 import 'package:pokedex/widgets/stroke_text.dart';
-import 'package:pokedex/constants.dart' as constants;
+import 'package:pokedex/core/constants.dart' as constants;
 
 class PokemonNameHeadline extends StatelessWidget {
   const PokemonNameHeadline(this.pokemon, {Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/models/pokemon_data.dart';
-import 'package:pokedex/constants.dart' as constants;
+import 'package:pokedex/core/constants.dart' as constants;
 
 class SearchConfig {
   TextEditingController searchFieldController;
